@@ -10,9 +10,11 @@ import com.mtyw.storage.internal.IpfsFileOperation;
 import com.mtyw.storage.model.request.filecoin.UploadFileCoinFileRequest;
 import com.mtyw.storage.model.request.ipfs.CreateDirRequest;
 import com.mtyw.storage.model.response.ResultResponse;
+import com.mtyw.storage.model.response.filecoin.FilecoinDateRes;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import static com.mtyw.storage.util.LogUtils.logException;
 
@@ -77,5 +79,10 @@ public class MFSSClient implements MFSS{
     public ResultResponse uploadFilecoinFile(UploadFileCoinFileRequest uploadIpfsFileRequest, CallBack callBack) throws MtywApiException {
         ResultResponse response  = fileCoinOperation.uploadFilecoinFile(uploadIpfsFileRequest, new CallBack(null,null));
         return response;
+    }
+    @Override
+    public ResultResponse<List<FilecoinDateRes>> filecoinDatelist(){
+        ResultResponse<List<FilecoinDateRes>> resultResponse = fileCoinOperation.filecoinDatelist();
+        return resultResponse;
     }
 }

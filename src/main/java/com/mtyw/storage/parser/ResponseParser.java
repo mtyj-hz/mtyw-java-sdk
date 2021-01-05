@@ -23,6 +23,7 @@ import com.mtyw.storage.common.Response;
 import com.mtyw.storage.model.response.ResultResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Used to convert an result stream to a java object.
@@ -38,4 +39,7 @@ public interface ResponseParser {
      *
      */
     public <T> ResultResponse<T>   parse(Response response, Class<T> tClass) throws IOException;
+
+    public <T> ResultResponse<List<T>>   parseList(Response response, Class<T> tClass) throws IOException;
+
 }

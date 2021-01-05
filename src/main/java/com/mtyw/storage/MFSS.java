@@ -23,6 +23,9 @@ import com.mtyw.storage.common.CallBack;
 import com.mtyw.storage.exception.MtywApiException;
 import com.mtyw.storage.model.request.filecoin.UploadFileCoinFileRequest;
 import com.mtyw.storage.model.response.ResultResponse;
+import com.mtyw.storage.model.response.filecoin.FilecoinDateRes;
+
+import java.util.List;
 
 
 public interface MFSS {
@@ -42,6 +45,8 @@ public interface MFSS {
     ResultResponse  createdir(String parentpath, String dirname);
 
     ResultResponse uploadFilecoinFile(UploadFileCoinFileRequest uploadIpfsFileRequest, CallBack callBack) throws MtywApiException;
+
+    ResultResponse<List<FilecoinDateRes>> filecoinDatelist();
 
 
 

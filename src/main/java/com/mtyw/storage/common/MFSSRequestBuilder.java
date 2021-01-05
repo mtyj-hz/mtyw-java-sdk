@@ -44,7 +44,8 @@ public class MFSSRequestBuilder<T> {
         Map<String, String> mapParams = objToMapParam(ob);
         this.parameters.putAll(mapParams);
     }
-
+    public MFSSRequestBuilder() {
+    }
     public HttpMethod getMethod() {
         return method;
     }

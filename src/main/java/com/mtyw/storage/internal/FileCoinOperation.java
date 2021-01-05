@@ -11,11 +11,13 @@ import com.mtyw.storage.exception.MtywApiException;
 import com.mtyw.storage.model.request.filecoin.UploadFileCoinFileRequest;
 import com.mtyw.storage.model.request.filecoin.UploadFilecoinRequest;
 import com.mtyw.storage.model.response.ResultResponse;
+import com.mtyw.storage.model.response.filecoin.FilecoinDateRes;
 import com.mtyw.storage.model.response.filecoin.UploadFilecoinSignDTO;
 import com.mtyw.storage.util.HttpHeaders;
 
-import static com.mtyw.storage.constant.MFSSConstants.DEFAULT_OBJECT_CONTENT_TYPE;
-import static com.mtyw.storage.constant.MFSSConstants.HTTP_OBJECT_CONNECTION;
+import java.util.List;
+
+import static com.mtyw.storage.constant.MFSSConstants.*;
 
 public class FileCoinOperation extends FileCommonOperation {
     public FileCoinOperation(ServiceClient client , String accesskey, String accesssecret) {
@@ -40,7 +42,7 @@ public class FileCoinOperation extends FileCommonOperation {
             uploadFilecoinRequest.setUserId(uploadFilecoinSignDTO.getData().getUserId());
             Request uploadFilecoinSignRequest = new MFSSRequestBuilder<>(uploadFilecoinRequest).build();
             uploadFilecoinSignRequest.setResourcePath(ResourePathConstant.UPLOADFILECOIN_RESOURCE);
-            uploadFilecoinSignRequest.addHeader(HttpHeaders.CONTENT_TYPE, DEFAULT_OBJECT_CONTENT_TYPE);
+            uploadFilecoinSignRequest.addHeader(HttpHeaders.CONTENT_TYPE, DEFAULT_MULTIPART_CONTENT_TYPE);
             uploadFilecoinSignRequest.addHeader(HttpHeaders.CONNECTION, HTTP_OBJECT_CONNECTION);
 
             uploadFilecoinSignRequest.setMethod(HttpMethod.POST);
@@ -57,5 +59,14 @@ public class FileCoinOperation extends FileCommonOperation {
             }
         }
         return ResultResponse.suc();
+    }
+
+    public ResultResponse<List<FilecoinDateRes>> filecoinDatelist(){
+        Request request = new MFSSRequestBuilder<>().build();
+        request.setResourcePath(ResourePathConstant.FILECOIN_DATELIST_RESOURCE);
+
+        ResultResponse<List<FilecoinDateRes>> resultResponse = commonParserExcutelist(request, FilecoinDateRes.class);
+        return resultResponse;
+
     }
 }

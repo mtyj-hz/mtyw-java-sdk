@@ -9,6 +9,7 @@ import com.mtyw.storage.parser.ResponseParser;
 import com.mtyw.storage.parser.ResponserManager;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.mtyw.storage.parser.ResponserManager.commonresponseParser;
 import static com.mtyw.storage.util.LogUtils.logException;
@@ -45,9 +46,29 @@ public abstract class FileCommonOperation {
             throw new MtywApiException("Unable to parse response error",rpe);
         }
     }
+
+    protected <T> ResultResponse<List<T>> excutelist(Request request,
+                                                Class<T> responseClass, ResponseParser responseParser) throws MtywApiException {
+
+        request.getHeaders().putAll(client.getClientConfiguration().getDefaultHeaders());
+
+        Context context = createDefaultContext(accesskey,accesssecret);
+        Response response = client.sendRequest(request,context);
+        try {
+            return responseParser.parseList(response, responseClass);
+        } catch (IOException rpe) {
+            logException("Unable to parse response error: ", rpe);
+            throw new MtywApiException("Unable to parse response error",rpe);
+        }
+    }
     protected <T> ResultResponse<T>  commonParserExcute(Request request, Class<T> responseClass) throws MtywApiException {
 
         return excute(request, responseClass, commonresponseParser);
+    }
+
+    protected <T> ResultResponse<List<T>>  commonParserExcutelist(Request request, Class<T> responseClass) throws MtywApiException {
+
+        return excutelist(request, responseClass, commonresponseParser);
     }
 
     protected Context createDefaultContext(String accesskey, String accesssecret) {

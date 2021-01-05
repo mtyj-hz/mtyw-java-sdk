@@ -9,5 +9,8 @@ public class ResourePathConstant {
 
     public final static String UPLOADFILECOIN_RESOURCE = "/fileCoin/upload";
 
+    public final static String FILECOIN_DATELIST_RESOURCE = "/filecoinsdk/filecoinDatelist";
+
+
 
 }
