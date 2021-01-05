@@ -4,6 +4,7 @@ import com.mtyw.storage.common.CallBack;
 import com.mtyw.storage.common.ClientHttpRequestConfiguration;
 import com.mtyw.storage.common.DefaultServiceClient;
 import com.mtyw.storage.common.ServiceClient;
+import com.mtyw.storage.exception.MtywApiException;
 import com.mtyw.storage.internal.FileCoinOperation;
 import com.mtyw.storage.internal.IpfsFileOperation;
 import com.mtyw.storage.model.request.filecoin.UploadFileCoinFileRequest;
@@ -73,7 +74,7 @@ public class MFSSClient implements MFSS{
         return response;
     }
     @Override
-    public ResultResponse uploadFilecoinFile(UploadFileCoinFileRequest uploadIpfsFileRequest, CallBack callBack){
+    public ResultResponse uploadFilecoinFile(UploadFileCoinFileRequest uploadIpfsFileRequest, CallBack callBack) throws MtywApiException {
         ResultResponse response  = fileCoinOperation.uploadFilecoinFile(uploadIpfsFileRequest, new CallBack(null,null));
         return response;
     }

@@ -36,9 +36,9 @@ public class FileCoinOperation extends FileCommonOperation {
             uploadFilecoinRequest.setDays(uploadFilecoinSignDTO.getData().getDays());
             uploadFilecoinRequest.setFileName(uploadFilecoinSignDTO.getData().getFileName());
             uploadFilecoinRequest.setFileSize(uploadFilecoinSignDTO.getData().getFileSize());
-            uploadFilecoinRequest.setUploadid(uploadFilecoinSignDTO.getData().getUploadId());
+            uploadFilecoinRequest.setUploadId(uploadFilecoinSignDTO.getData().getUploadId());
             uploadFilecoinRequest.setUserId(uploadFilecoinSignDTO.getData().getUserId());
-            Request uploadFilecoinSignRequest = new MFSSRequestBuilder<>(uploadFileCoinFileRequest).build();
+            Request uploadFilecoinSignRequest = new MFSSRequestBuilder<>(uploadFilecoinRequest).build();
             uploadFilecoinSignRequest.setResourcePath(ResourePathConstant.UPLOADFILECOIN_RESOURCE);
             uploadFilecoinSignRequest.addHeader(HttpHeaders.CONTENT_TYPE, DEFAULT_OBJECT_CONTENT_TYPE);
             uploadFilecoinSignRequest.addHeader(HttpHeaders.CONNECTION, HTTP_OBJECT_CONNECTION);

@@ -6,7 +6,7 @@ public class UploadFilecoinRequest {
     private Long timestamp;
     private String nodeAddr;
     private String nodeIp;
-    private Integer uploadid;
+    private Integer uploadId;
     private Integer userId;
     private String fileName;
     private Long fileSize;
@@ -46,12 +46,12 @@ public class UploadFilecoinRequest {
         this.nodeIp = nodeIp;
     }
 
-    public Integer getUploadid() {
-        return uploadid;
+    public Integer getUploadId() {
+        return uploadId;
     }
 
-    public void setUploadid(Integer uploadid) {
-        this.uploadid = uploadid;
+    public void setUploadId(Integer uploadId) {
+        this.uploadId = uploadId;
     }
 
     public Integer getUserId() {

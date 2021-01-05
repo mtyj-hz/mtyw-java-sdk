@@ -20,7 +20,7 @@ public final class ResponserManager {
             try {
 
                 String str = CommonUtil.inputstreamToString(response.getContent());
-                if (!"".equals(str)) {
+                if (str != null && !"".equals(str)) {
                     ResultResponse resultResponse =  JSONObject.parseObject(str, ResultResponse.class);
                     T ob = JSONObject.parseObject(resultResponse.getData().toString(), tClass);
                     resultResponse.setData(ob);

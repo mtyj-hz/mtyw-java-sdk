@@ -26,7 +26,7 @@ public final class MFSSConstants {
 
     public static final String DEFAULT_CHARSET_NAME = "utf-8";
 
-    public static final String DEFAULT_OBJECT_CONTENT_TYPE = "application/octet-stream";
+    public static final String DEFAULT_OBJECT_CONTENT_TYPE = "multipart/form-data; boundary=----WebKitFormBoundaryx581F7Th7aqhf1DP";
     public static final String HTTP_OBJECT_CONNECTION = "Keep-Alive";
 
 

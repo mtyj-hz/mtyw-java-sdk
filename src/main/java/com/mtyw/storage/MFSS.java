@@ -20,20 +20,11 @@
 package com.mtyw.storage;
 
 import com.mtyw.storage.common.CallBack;
+import com.mtyw.storage.exception.MtywApiException;
 import com.mtyw.storage.model.request.filecoin.UploadFileCoinFileRequest;
 import com.mtyw.storage.model.response.ResultResponse;
 
-/**
- * Entry point interface of Alibaba Cloud's MFSS (Object Store Service)
- * <p>
- * Object Store Service (a.k.a MFSS) is the massive, secure, low cost and highly
- * reliable public storage which could be accessed from anywhere at anytime via
- * REST APIs, SDKs or web console. <br>
- * Developers could use MFSS to create any services that need huge data storage
- * and access throughput, such as media sharing web apps, cloud storage service
- * or enterprise or personal data backup.
- * </p>
- */
+
 public interface MFSS {
 
 
@@ -50,7 +41,7 @@ public interface MFSS {
 
     ResultResponse  createdir(String parentpath, String dirname);
 
-    ResultResponse uploadFilecoinFile(UploadFileCoinFileRequest uploadIpfsFileRequest, CallBack callBack);
+    ResultResponse uploadFilecoinFile(UploadFileCoinFileRequest uploadIpfsFileRequest, CallBack callBack) throws MtywApiException;
 
 
 
