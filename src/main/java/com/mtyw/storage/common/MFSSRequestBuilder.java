@@ -19,11 +19,13 @@
 
 package com.mtyw.storage.common;
 
+import com.alibaba.fastjson.JSONObject;
 import com.mtyw.storage.HttpMethod;
 import com.mtyw.storage.exception.MtExceptionEnum;
 import com.mtyw.storage.exception.MtywApiException;
 import com.mtyw.storage.util.CommonUtil;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.net.URI;
@@ -40,9 +42,14 @@ public class MFSSRequestBuilder<T> {
     private InputStream inputStream;
     private long inputSize = 0;
 
-    public MFSSRequestBuilder(T ob) {
-        Map<String, String> mapParams = objToMapParam(ob);
-        this.parameters.putAll(mapParams);
+    public MFSSRequestBuilder(T ob, Boolean postbody) {
+       if (postbody) {
+           InputStream inputStream = objToInputstream(ob);
+           this.inputStream = inputStream;
+       }else {
+           Map<String, String> mapParams = objToMapParam(ob);
+           this.parameters.putAll(mapParams);
+       }
     }
     public MFSSRequestBuilder() {
     }
@@ -139,5 +146,16 @@ public class MFSSRequestBuilder<T> {
             }
         }
         return map;
+    }
+
+    private static InputStream objToInputstream(Object obj) {
+        Boolean paramcheck = CommonUtil.isObjectFieldEmpty(obj) ;
+        if (paramcheck) {
+            throw new MtywApiException(MtExceptionEnum.ILLEGAL_PARAM);
+        }
+        InputStream inputStream = new ByteArrayInputStream(JSONObject.toJSONBytes(obj));
+        return inputStream;
+
+
     }
 }

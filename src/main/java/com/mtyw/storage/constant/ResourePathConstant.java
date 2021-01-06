@@ -11,6 +11,15 @@ public class ResourePathConstant {
 
     public final static String FILECOIN_DATELIST_RESOURCE = "/filecoinsdk/filecoinDatelist";
 
+    public final static String FILECOIN_CALCULATE_PRICE_RESOURCE = "/filecoinsdk/calculatePrice";
+
+    public final static String FILECOIN_RETRIEVE_CALCULATE_PRICE_RESOURCE = "/filecoinsdk/calculateRetrievePrice";
+    public final static String FILECOIN_RETRIEVE_RESOURCE = "/filecoinsdk/retrieve";
+
+
+
+
+
 
 
 }

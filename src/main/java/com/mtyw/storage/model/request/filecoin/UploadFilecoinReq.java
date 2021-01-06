@@ -1,6 +1,6 @@
 package com.mtyw.storage.model.request.filecoin;
 
-public class UploadFilecoinRequest {
+public class UploadFilecoinReq {
 
     private String sign;
     private Long timestamp;

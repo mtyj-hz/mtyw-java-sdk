@@ -11,7 +11,7 @@ public class IpfsFileOperation extends FileCommonOperation {
     }
 
     public ResultResponse createDir(CreateDirRequest createDirRequest) {
-        Request request = new MFSSRequestBuilder<>(createDirRequest).build();
+        Request request = new MFSSRequestBuilder<>(createDirRequest,false).build();
         request.setResourcePath(ResourePathConstant.CREATEDIR_RESOURCE);
         request.addHeader("token","eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5MCIsImlhdCI6MTYwNzQyNTIyMn0.HGmoPPVMPfewPTdGFN4J3MnSAJBOx6GPb3eoV8fpdIE");
         ResultResponse resultResponse = commonParserExcute(request, ResultResponse.class);

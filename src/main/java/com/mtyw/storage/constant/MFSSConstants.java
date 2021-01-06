@@ -26,10 +26,13 @@ public final class MFSSConstants {
 
     public static final String DEFAULT_CHARSET_NAME = "utf-8";
 
-    public static final String DEFAULT_OBJECT_CONTENT_TYPE = "multipart/form-data; boundary=----WebKitFormBoundaryx581F7Th7aqhf1DP";
-    public static final String DEFAULT_MULTIPART_CONTENT_TYPE = "multipart/form-data; boundary=----WebKitFormBoundaryx581F7Th7aqhf1DP";
+    public static final String DEFAULT_OBJECT_CONTENT_TYPE = "application/json";
 
     public static final String HTTP_OBJECT_CONNECTION = "Keep-Alive";
+
+    public static  final String HTTP_BODUNARY="----WebKitFormBoundaryRykOn5CIfLK3mb3m";
+
+    public static final String DEFAULT_MULTIPART_CONTENT_TYPE = "multipart/form-data;boundary="+HTTP_BODUNARY;
 
 
     public static final int KB = 1024;

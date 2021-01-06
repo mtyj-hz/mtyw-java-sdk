@@ -21,8 +21,12 @@ package com.mtyw.storage;
 
 import com.mtyw.storage.common.CallBack;
 import com.mtyw.storage.exception.MtywApiException;
-import com.mtyw.storage.model.request.filecoin.UploadFileCoinFileRequest;
+import com.mtyw.storage.model.request.filecoin.CalculatePriceReq;
+import com.mtyw.storage.model.request.filecoin.RetrieveReq;
+import com.mtyw.storage.model.request.filecoin.UploadFileCoinFileReq;
 import com.mtyw.storage.model.response.ResultResponse;
+import com.mtyw.storage.model.response.filecoin.FileBalanceRes;
+import com.mtyw.storage.model.response.filecoin.FileRetrieveBalanceRes;
 import com.mtyw.storage.model.response.filecoin.FilecoinDateRes;
 
 import java.util.List;
@@ -38,15 +42,31 @@ public interface MFSS {
     void shutdown();
 
     /**
-     * 
+     * ipfs创建文件夹
      */
     // public Boolean uploadFile(String filePath) throws ApplicationException;
 
     ResultResponse  createdir(String parentpath, String dirname);
 
-    ResultResponse uploadFilecoinFile(UploadFileCoinFileRequest uploadIpfsFileRequest, CallBack callBack) throws MtywApiException;
+    /**
+     * 上传文件到filecoin
+     * @param uploadIpfsFileRequest 文件相关信息
+     * @param callBack
+     * @return
+     * @throws MtywApiException
+     */
+    ResultResponse uploadFilecoinFile(UploadFileCoinFileReq uploadIpfsFileRequest, CallBack callBack) throws MtywApiException;
 
     ResultResponse<List<FilecoinDateRes>> filecoinDatelist();
+    /**
+     *
+     */
+    ResultResponse<FileBalanceRes> calculatePrice(CalculatePriceReq calculatePriceReq);
+
+    ResultResponse<FileRetrieveBalanceRes> calculateRetrievePrice(Long size);
+
+    ResultResponse<Boolean> retrieve(RetrieveReq retrieveReq);
+
 
 
 

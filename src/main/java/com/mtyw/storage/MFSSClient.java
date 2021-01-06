@@ -7,9 +7,13 @@ import com.mtyw.storage.common.ServiceClient;
 import com.mtyw.storage.exception.MtywApiException;
 import com.mtyw.storage.internal.FileCoinOperation;
 import com.mtyw.storage.internal.IpfsFileOperation;
-import com.mtyw.storage.model.request.filecoin.UploadFileCoinFileRequest;
+import com.mtyw.storage.model.request.filecoin.CalculatePriceReq;
+import com.mtyw.storage.model.request.filecoin.RetrieveReq;
+import com.mtyw.storage.model.request.filecoin.UploadFileCoinFileReq;
 import com.mtyw.storage.model.request.ipfs.CreateDirRequest;
 import com.mtyw.storage.model.response.ResultResponse;
+import com.mtyw.storage.model.response.filecoin.FileBalanceRes;
+import com.mtyw.storage.model.response.filecoin.FileRetrieveBalanceRes;
 import com.mtyw.storage.model.response.filecoin.FilecoinDateRes;
 
 import java.net.URI;
@@ -76,7 +80,7 @@ public class MFSSClient implements MFSS{
         return response;
     }
     @Override
-    public ResultResponse uploadFilecoinFile(UploadFileCoinFileRequest uploadIpfsFileRequest, CallBack callBack) throws MtywApiException {
+    public ResultResponse uploadFilecoinFile(UploadFileCoinFileReq uploadIpfsFileRequest, CallBack callBack) throws MtywApiException {
         ResultResponse response  = fileCoinOperation.uploadFilecoinFile(uploadIpfsFileRequest, new CallBack(null,null));
         return response;
     }
@@ -84,5 +88,21 @@ public class MFSSClient implements MFSS{
     public ResultResponse<List<FilecoinDateRes>> filecoinDatelist(){
         ResultResponse<List<FilecoinDateRes>> resultResponse = fileCoinOperation.filecoinDatelist();
         return resultResponse;
+    }
+
+    @Override
+    public ResultResponse<FileBalanceRes> calculatePrice(CalculatePriceReq calculatePriceReq){
+        ResultResponse<FileBalanceRes> resResultResponse = fileCoinOperation.calculatePrice(calculatePriceReq);
+        return resResultResponse;
+    }
+    @Override
+    public ResultResponse<FileRetrieveBalanceRes> calculateRetrievePrice(Long size){
+        ResultResponse<FileRetrieveBalanceRes> resResultResponse = fileCoinOperation.calculateRetrievePrice( size);
+        return resResultResponse;
+    }
+
+    public ResultResponse<Boolean> retrieve(RetrieveReq retrieveReq){
+        ResultResponse<Boolean> resResultResponse = fileCoinOperation.retrieve( retrieveReq);
+        return resResultResponse;
     }
 }

@@ -4,7 +4,7 @@ package com.mtyw.storage.model.request.filecoin;
 import java.io.InputStream;
 import java.math.BigDecimal;
 
-public class UploadFileCoinFileRequest {
+public class UploadFileCoinFileReq {
     /**
      * 文件流
      */
