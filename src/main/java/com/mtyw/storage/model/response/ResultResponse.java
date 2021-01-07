@@ -122,4 +122,14 @@ public class ResultResponse<T> {
         this.total = total;
     }
 
+    @Override
+    public String toString() {
+        return "ResultResponse{" +
+                "success=" + success +
+                ", code=" + code +
+                ", msg='" + msg + '\'' +
+                ", data=" + data +
+                ", total=" + total +
+                '}';
+    }
 }

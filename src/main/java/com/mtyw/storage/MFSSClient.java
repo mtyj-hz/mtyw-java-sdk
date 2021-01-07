@@ -15,6 +15,10 @@ import com.mtyw.storage.model.response.ResultResponse;
 import com.mtyw.storage.model.response.filecoin.FileBalanceRes;
 import com.mtyw.storage.model.response.filecoin.FileRetrieveBalanceRes;
 import com.mtyw.storage.model.response.filecoin.FilecoinDateRes;
+import com.mtyw.storage.model.response.ipfs.FileDetailRes;
+import com.mtyw.storage.model.response.ipfs.FileInfoRes;
+import com.mtyw.storage.model.response.ipfs.FileInspectRes;
+import com.mtyw.storage.model.response.ipfs.RegionRes;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -86,9 +90,10 @@ public class MFSSClient implements MFSS{
     }
 
     @Override
-    public ResultResponse downloadIpfsFile(String filePath) {
-        return ipfsFileOperation.downloadIpfsFile(filePath);
+    public ResultResponse<Void> downloadIpfsFile(String filePath, String saveDir) {
+        return ipfsFileOperation.downloadIpfsFile(filePath, saveDir);
     }
+
     @Override
     public ResultResponse<List<FilecoinDateRes>> filecoinDatelist(){
         ResultResponse<List<FilecoinDateRes>> resultResponse = fileCoinOperation.filecoinDatelist();
@@ -109,5 +114,65 @@ public class MFSSClient implements MFSS{
     public ResultResponse<Boolean> retrieve(RetrieveReq retrieveReq){
         ResultResponse<Boolean> resResultResponse = fileCoinOperation.retrieve( retrieveReq);
         return resResultResponse;
+    }
+
+    @Override
+    public ResultResponse<FileInspectRes> ipfsInspectsign(String filepath) {
+        return null;
+    }
+
+    @Override
+    public ResultResponse<List<RegionRes>> getAllRegionList() {
+        return null;
+    }
+
+    @Override
+    public ResultResponse<FileDetailRes> backupManagement(String filepath) {
+        return null;
+    }
+
+    @Override
+    public ResultResponse<List<RegionRes>> getUsableRegionList(Long size) {
+        return null;
+    }
+
+    @Override
+    public ResultResponse<FileInfoRes> searchIpfsDirectorylist(String filepath, String fileName, String regionId) {
+        return null;
+    }
+
+    @Override
+    public ResultResponse<FileInfoRes> getIpfsDirectorylist(String filepath) {
+        return null;
+    }
+
+    @Override
+    public ResultResponse<Boolean> deleteIpfsfile(String filepath, List<String> nodeids) {
+        return null;
+    }
+
+    @Override
+    public ResultResponse<Boolean> deleteIpfsfileList(List<String> filepathlist) {
+        return null;
+    }
+
+    @Override
+    public ResultResponse<Boolean> copyfile(String filepath, List<Integer> regionids) {
+        return null;
+    }
+
+    @Override
+    public ResultResponse<Boolean> movefile(String filepath, String nodeid, Integer regionid) {
+        return null;
+    }
+
+    @Override
+    public ResultResponse<Boolean> movefileToDirectory(String directorypath, String filepath) {
+        return null;
+    }
+
+    @Override
+    public ResultResponse<Boolean> renameDirectory(String fromDirectoryPath, String toDirectoryPath) {
+        return null;
     }
 }

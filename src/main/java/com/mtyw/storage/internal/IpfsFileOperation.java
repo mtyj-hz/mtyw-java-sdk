@@ -8,56 +8,59 @@ import com.mtyw.storage.model.request.ipfs.DownloadIpfsFileRequest;
 import com.mtyw.storage.model.request.ipfs.DownloadIpfsFileSignRequest;
 import com.mtyw.storage.model.response.ResultResponse;
 import com.mtyw.storage.model.response.ipfs.FileDownloadResponse;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
 
 import java.io.*;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 public class IpfsFileOperation extends FileCommonOperation {
-    public IpfsFileOperation(ServiceClient client, String accesskey, String accesssecret) {
-        super(client, accesskey, accesssecret);
+
+    public IpfsFileOperation(ServiceClient client, String accessKey, String accessSecret) {
+        super(client, accessKey, accessSecret);
     }
 
     public ResultResponse createDir(CreateDirRequest createDirRequest) {
         Request request = new MFSSRequestBuilder<>(createDirRequest,false).build();
         request.setResourcePath(ResourePathConstant.CREATEDIR_RESOURCE);
         request.addHeader("token", "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5MCIsImlhdCI6MTYwNzQyNTIyMn0.HGmoPPVMPfewPTdGFN4J3MnSAJBOx6GPb3eoV8fpdIE");
-        ResultResponse resultResponse = commonParserExecute(request, ResultResponse.class);
+        ResultResponse resultResponse = commonParserExcute(request, ResultResponse.class);
         return resultResponse;
     }
 
-    public ResultResponse downloadIpfsFile(String filePath) {
+    public ResultResponse<Void> downloadIpfsFile(String filePath, String saveDir) {
         DownloadIpfsFileSignRequest param = new DownloadIpfsFileSignRequest(filePath);
-        Request request = new MFSSRequestBuilder<>(param).build();
+        Request request = new MFSSRequestBuilder<>(param, false).build();
         request.setResourcePath(ResourePathConstant.DOWNLOAD_IPFS_SIGN);
-        request.addHeader("token", "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5MCIsImlhdCI6MTYwNzQyNTIyMn0.HGmoPPVMPfewPTdGFN4J3MnSAJBOx6GPb3eoV8fpdIE");
-        ResultResponse<FileDownloadResponse> response = commonParserExecute(request, FileDownloadResponse.class);
+        ResultResponse<FileDownloadResponse> response = commonParserExcute(request, FileDownloadResponse.class);
         if (!response.isSuccess()) {
             return ResultResponse.fail(response.getMsg());
         }
         FileDownloadResponse data = response.getData();
         DownloadIpfsFileRequest download = new DownloadIpfsFileRequest(data);
-        Request dr = new MFSSRequestBuilder<>(download).build();
+        Request dr = new MFSSRequestBuilder<>(download, false).build();
+        dr.setResourcePath(ResourePathConstant.DOWNLOAD_IPFS);
         dr.setUrl(data.getNodeAddr());
-        Response response2 = commonParserExecute(dr);
+        ServiceClient.Request httpRequest = buildRequest(dr);
         try {
-            HttpEntity entity = response2.getHttpResponse().getEntity();
-            File desc = new File("/Users/hsw" + File.separator + data.getFilename());
-//            File folder = desc.getParentFile();
-//            folder.mkdirs();
-            try (InputStream is = entity.getContent();
-                 OutputStream os = new FileOutputStream(desc)) {
-                byte[] bs = new byte[1024];
-                int len = 0; //实际读取个数
-                while ((len = is.read(bs)) > 0) {   //read返回 读取的字节数
-                    os.write(bs, 0, len); //从0到len位置写入到数组bs中
-                }
-            }
-
+            downloadFile(httpRequest.getUri(), saveDir, data.getFilename());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return ResultResponse.suc();
+    }
+
+    /**
+     * zero copy
+     */
+    public void downloadFile(String url, String saveDir, String fileName) throws IOException {
+        try (InputStream ins = new URL(url).openStream()) {
+            Path target = Paths.get(saveDir, fileName);
+            Files.createDirectories(target.getParent());
+            Files.copy(ins, target, StandardCopyOption.REPLACE_EXISTING);
+        }
     }
 
 

@@ -6,35 +6,53 @@ import com.mtyw.storage.model.response.ipfs.FileDownloadResponse;
  * @author lt
  * @Date 11:44 2021/1/6
  */
-public class DownloadIpfsFileRequest extends BaseRequest{
+public class DownloadIpfsFileRequest{
 
-    private Integer userId;
-    private String nodeIp;
-    private String fileName;
+    private Integer userid;
+    private String nodeip;
+    private String filename;
     private String cid;
+    private String sign;
+    private Long timestamp;
 
-    public Integer getUserId() {
-        return userId;
+    public String getSign() {
+        return sign;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setSign(String sign) {
+        this.sign = sign;
     }
 
-    public String getNodeIp() {
-        return nodeIp;
+    public Long getTimestamp() {
+        return timestamp;
     }
 
-    public void setNodeIp(String nodeIp) {
-        this.nodeIp = nodeIp;
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 
-    public String getFileName() {
-        return fileName;
+    public Integer getUserid() {
+        return userid;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setUserid(Integer userid) {
+        this.userid = userid;
+    }
+
+    public String getNodeip() {
+        return nodeip;
+    }
+
+    public void setNodeip(String nodeip) {
+        this.nodeip = nodeip;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     public String getCid() {
@@ -46,10 +64,11 @@ public class DownloadIpfsFileRequest extends BaseRequest{
     }
 
     public DownloadIpfsFileRequest(FileDownloadResponse r) {
-        super(r.getSign(), r.getTimestamp());
-        this.userId = r.getUid();
-        this.nodeIp = r.getNodeip();
-        this.fileName = r.getFilename();
+        this.sign = r.getSign();
+        this.timestamp = r.getTimestamp();
+        this.userid = r.getUid();
+        this.nodeip = r.getNodeip();
+        this.filename = r.getFilename();
         this.cid = r.getCid();
     }
 }

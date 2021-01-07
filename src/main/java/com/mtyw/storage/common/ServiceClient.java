@@ -104,7 +104,7 @@ public abstract class ServiceClient {
         }
     }
 
-    private Request buildRequest(com.mtyw.storage.common.Request requestMessage, Context context) throws MtywApiException {
+    public Request buildRequest(com.mtyw.storage.common.Request requestMessage, Context context) throws MtywApiException {
 
         Request request = new Request();
         request.setMethod(requestMessage.getMethod());

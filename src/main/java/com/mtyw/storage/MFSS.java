@@ -28,6 +28,10 @@ import com.mtyw.storage.model.response.ResultResponse;
 import com.mtyw.storage.model.response.filecoin.FileBalanceRes;
 import com.mtyw.storage.model.response.filecoin.FileRetrieveBalanceRes;
 import com.mtyw.storage.model.response.filecoin.FilecoinDateRes;
+import com.mtyw.storage.model.response.ipfs.FileDetailRes;
+import com.mtyw.storage.model.response.ipfs.FileInfoRes;
+import com.mtyw.storage.model.response.ipfs.FileInspectRes;
+import com.mtyw.storage.model.response.ipfs.RegionRes;
 
 import java.util.List;
 
@@ -68,8 +72,39 @@ public interface MFSS {
     ResultResponse<Boolean> retrieve(RetrieveReq retrieveReq);
 
 
-    ResultResponse downloadIpfsFile(String filePath);
+    ResultResponse<Void> downloadIpfsFile(String filePath, String saveDir);
 
+//    ResultResponse<Boolean> spaceInspection(Long size);
+
+    ResultResponse<FileInspectRes> ipfsInspectsign(String filepath);
+
+    ResultResponse<List<RegionRes>> getAllRegionList();
+
+    ResultResponse<FileDetailRes> backupManagement(String filepath);
+
+    ResultResponse<List<RegionRes>> getUsableRegionList(Long size);
+
+    ResultResponse<FileInfoRes> searchIpfsDirectorylist(String filepath, String fileName, String regionId);
+
+    ResultResponse<FileInfoRes> getIpfsDirectorylist(String filepath);
+
+    // post
+    ResultResponse<Boolean> deleteIpfsfile(String filepath, List<String> nodeids);
+
+    // post
+    ResultResponse<Boolean> deleteIpfsfileList(List<String> filepathlist);
+
+    // post
+    ResultResponse<Boolean> copyfile(String filepath, List<Integer> regionids);
+
+    // post
+    ResultResponse<Boolean> movefile(String filepath, String nodeid, Integer regionid);
+
+    // post
+    ResultResponse<Boolean> movefileToDirectory(String directorypath, String filepath);
+
+    // post
+    ResultResponse<Boolean> renameDirectory(String fromDirectoryPath, String toDirectoryPath);
 
 
 

@@ -25,10 +25,11 @@ public final class ResponserManager {
                 String str = CommonUtil.inputstreamToString(response.getContent());
                 if (str != null && !"".equals(str)) {
                     ResultResponse resultResponse =  JSONObject.parseObject(str, ResultResponse.class);
-                    T ob = JSONObject.parseObject(resultResponse.getData().toString(), tClass);
-                    resultResponse.setData(ob);
+                    if (resultResponse.isSuccess()) {
+                        T ob = JSONObject.parseObject(resultResponse.getData().toString(), tClass);
+                        resultResponse.setData(ob);
+                    }
                     return resultResponse;
-
                 }
                 return null;
             } catch (IOException e){
