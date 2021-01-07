@@ -32,8 +32,8 @@ public abstract class FileCommonOperation {
 
     }
 
-    protected <T> ResultResponse<T> excute(Request request,
-                                           Class<T> responseClass, ResponseParser responseParser) throws MtywApiException {
+    protected <T> ResultResponse<T> execute(Request request,
+                                            Class<T> responseClass, ResponseParser responseParser) throws MtywApiException {
 
         request.getHeaders().putAll(client.getClientConfiguration().getDefaultHeaders());
 
@@ -47,28 +47,18 @@ public abstract class FileCommonOperation {
         }
     }
 
-    protected <T> ResultResponse<List<T>> excutelist(Request request,
-                                                Class<T> responseClass, ResponseParser responseParser) throws MtywApiException {
-
+    protected <T> Response execute(Request request) throws MtywApiException {
         request.getHeaders().putAll(client.getClientConfiguration().getDefaultHeaders());
-
         Context context = createDefaultContext(accesskey,accesssecret);
-        Response response = client.sendRequest(request,context);
-        try {
-            return responseParser.parseList(response, responseClass);
-        } catch (IOException rpe) {
-            logException("Unable to parse response error: ", rpe);
-            throw new MtywApiException("Unable to parse response error",rpe);
-        }
+        return client.sendRequest(request,context);
     }
-    protected <T> ResultResponse<T>  commonParserExcute(Request request, Class<T> responseClass) throws MtywApiException {
+    protected <T> ResultResponse<T> commonParserExecute(Request request, Class<T> responseClass) throws MtywApiException {
 
-        return excute(request, responseClass, commonresponseParser);
+        return execute(request, responseClass, commonresponseParser);
     }
 
-    protected <T> ResultResponse<List<T>>  commonParserExcutelist(Request request, Class<T> responseClass) throws MtywApiException {
-
-        return excutelist(request, responseClass, commonresponseParser);
+    protected Response commonParserExecute(Request request) throws MtywApiException {
+        return execute(request);
     }
 
     protected Context createDefaultContext(String accesskey, String accesssecret) {

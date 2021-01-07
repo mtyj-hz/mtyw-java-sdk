@@ -21,5 +21,7 @@ public class ResourePathConstant {
 
 
 
+    public final static String DOWNLOAD_IPFS_SIGN = "/filesdk/ipfsDownloadSign";
+
 
 }

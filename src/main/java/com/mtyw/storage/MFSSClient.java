@@ -84,6 +84,11 @@ public class MFSSClient implements MFSS{
         ResultResponse response  = fileCoinOperation.uploadFilecoinFile(uploadIpfsFileRequest, new CallBack(null,null));
         return response;
     }
+
+    @Override
+    public ResultResponse downloadIpfsFile(String filePath) {
+        return ipfsFileOperation.downloadIpfsFile(filePath);
+    }
     @Override
     public ResultResponse<List<FilecoinDateRes>> filecoinDatelist(){
         ResultResponse<List<FilecoinDateRes>> resultResponse = fileCoinOperation.filecoinDatelist();

@@ -21,7 +21,7 @@ public final class ResponserManager {
         @Override
         public <T> ResultResponse<T>  parse(Response response, Class<T> tClass) throws IOException {
             try {
-
+//                response.getHeaders().get("")
                 String str = CommonUtil.inputstreamToString(response.getContent());
                 if (str != null && !"".equals(str)) {
                     ResultResponse resultResponse =  JSONObject.parseObject(str, ResultResponse.class);

@@ -68,6 +68,8 @@ public interface MFSS {
     ResultResponse<Boolean> retrieve(RetrieveReq retrieveReq);
 
 
+    ResultResponse downloadIpfsFile(String filePath);
+
 
 
 

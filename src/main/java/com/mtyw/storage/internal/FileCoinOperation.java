@@ -32,7 +32,7 @@ public class FileCoinOperation extends FileCommonOperation {
     public ResultResponse uploadFilecoinFile(UploadFileCoinFileReq uploadFileCoinFileReq, CallBack callBack) throws MtywApiException {
         Request request = new MFSSRequestBuilder<>(uploadFileCoinFileReq,false).build();
         request.setResourcePath(ResourePathConstant.UPLOADFILECOINSIGN_RESOURCE);
-        ResultResponse<UploadFilecoinSignDTO> uploadFilecoinSignDTO = commonParserExcute(request, UploadFilecoinSignDTO.class);
+        ResultResponse<UploadFilecoinSignDTO> uploadFilecoinSignDTO = commonParserExecute(request, UploadFilecoinSignDTO.class);
         if (uploadFilecoinSignDTO.isSuccess()) {
             UploadFilecoinReq uploadFilecoinReq = new UploadFilecoinReq();
             uploadFilecoinReq.setNodeAddr(uploadFilecoinSignDTO.getData().getNodeAddr());
@@ -52,7 +52,7 @@ public class FileCoinOperation extends FileCommonOperation {
             uploadFilecoinSignRequest.setContentLength(uploadFileCoinFileReq.getFileSize());
             uploadFilecoinSignRequest.setContent(uploadFileCoinFileReq.getInputStream());
             uploadFilecoinSignRequest.setUrl(uploadFilecoinSignDTO.getData().getNodeAddr());
-            ResultResponse<String> resultResponse = commonParserExcute(uploadFilecoinSignRequest, String.class);
+            ResultResponse<String> resultResponse = commonParserExecute(uploadFilecoinSignRequest, String.class);
             if (callBack != null) {
                 try{
                     callBack.invoke(callBack.getArgs());
