@@ -100,4 +100,17 @@ public class FileVO {
             this.regionId = regionId;
         }
     }
+
+    @Override
+    public String toString() {
+        return "FileVO{" +
+                "fileName='" + fileName + '\'' +
+                ", fileSize=" + fileSize +
+                ", cid='" + cid + '\'' +
+                ", nodeids=" + nodeids +
+                ", timestamp=" + timestamp +
+                ", path='" + path + '\'' +
+                ", type=" + type +
+                '}';
+    }
 }

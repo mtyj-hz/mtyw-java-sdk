@@ -28,7 +28,7 @@ import static com.mtyw.storage.util.LogUtils.logException;
  * @Author: xiaoli
  * @Date: 2020/12/29 10:46 上午
  */
-public class MFSSClient implements MFSS{
+public class MFSSClient implements MFSS {
     /* The default service client */
     private ServiceClient serviceClient;
     private String accesskey;
@@ -38,10 +38,11 @@ public class MFSSClient implements MFSS{
     private FileCoinOperation fileCoinOperation;
 
 
-    public MFSSClient(String url, String accessKey ,String accessScret)  {
-        this(url, accessKey,accessScret, null);
+    public MFSSClient(String url, String accessKey, String accessScret) {
+        this(url, accessKey, accessScret, null);
     }
-    public MFSSClient(String url, String accessKey ,String accessScret, ClientHttpRequestConfiguration config) {
+
+    public MFSSClient(String url, String accessKey, String accessScret, ClientHttpRequestConfiguration config) {
         config = config == null ? new ClientHttpRequestConfiguration() : config;
         URI uri = toURI(url);
         this.serviceClient = new DefaultServiceClient(config, uri);
@@ -51,8 +52,8 @@ public class MFSSClient implements MFSS{
     }
 
     private void initOperations() {
-        this.ipfsFileOperation = new IpfsFileOperation(this.serviceClient, accesskey,accesssecret);
-        this.fileCoinOperation = new FileCoinOperation(this.serviceClient, accesskey,accesssecret);
+        this.ipfsFileOperation = new IpfsFileOperation(this.serviceClient, accesskey, accesssecret);
+        this.fileCoinOperation = new FileCoinOperation(this.serviceClient, accesskey, accesssecret);
 
     }
 
@@ -73,14 +74,17 @@ public class MFSSClient implements MFSS{
             logException("shutdown throw exception: ", e);
         }
     }
+
     @Override
     public ResultResponse createdir(String parentpath, String dirname) {
         CreateDirRequest createDirRequest = new CreateDirRequest();
-        createDirRequest.setDirectoryName(dirname);
-        createDirRequest.setParentpath(parentpath);
-        ResultResponse response  = ipfsFileOperation.createDir(createDirRequest);
+        createDirRequest.setDirectoryName(parentpath);
+        createDirRequest.setParentpath(dirname);
+        ResultResponse response = ipfsFileOperation.createDir(createDirRequest);
         return response;
     }
+
+
     @Override
     public ResultResponse<String>  uploadFilecoinFile(UploadFileCoinFileReq uploadIpfsFileRequest, CallBack callBack) throws MtywApiException {
         ResultResponse<String>  response  = fileCoinOperation.uploadFilecoinFile(uploadIpfsFileRequest, new CallBack(null,null));
@@ -93,16 +97,17 @@ public class MFSSClient implements MFSS{
     }
 
     @Override
-    public ResultResponse<List<FilecoinDateRes>> filecoinDatelist(){
+    public ResultResponse<List<FilecoinDateRes>> filecoinDatelist() {
         ResultResponse<List<FilecoinDateRes>> resultResponse = fileCoinOperation.filecoinDatelist();
         return resultResponse;
     }
 
     @Override
-    public ResultResponse<FileBalanceRes> calculatePrice(CalculatePriceReq calculatePriceReq){
+    public ResultResponse<FileBalanceRes> calculatePrice(CalculatePriceReq calculatePriceReq) {
         ResultResponse<FileBalanceRes> resResultResponse = fileCoinOperation.calculatePrice(calculatePriceReq);
         return resResultResponse;
     }
+
     @Override
     public ResultResponse<List<NodeRes>> getFilecoinNodelist(){
         return fileCoinOperation.getFilecoinNodelist();
@@ -113,10 +118,11 @@ public class MFSSClient implements MFSS{
         return fileCoinOperation.getFilecoinDirectorylist( page, limit);
     }
     @Override
-    public ResultResponse<FileRetrieveBalanceRes> calculateRetrievePrice(Long size){
-        ResultResponse<FileRetrieveBalanceRes> resResultResponse = fileCoinOperation.calculateRetrievePrice( size);
+    public ResultResponse<FileRetrieveBalanceRes> calculateRetrievePrice(Long size) {
+        ResultResponse<FileRetrieveBalanceRes> resResultResponse = fileCoinOperation.calculateRetrievePrice(size);
         return resResultResponse;
     }
+
     @Override
     public ResultResponse<Boolean> retrieve(RetrieveReq retrieveReq) throws MtywApiException{
         ResultResponse<Boolean> resResultResponse = fileCoinOperation.retrieve( retrieveReq);
@@ -125,61 +131,61 @@ public class MFSSClient implements MFSS{
 
     @Override
     public ResultResponse<FileInspectRes> ipfsInspectsign(String filepath) {
-        return null;
+        return ipfsFileOperation.ipfsInspectsign(filepath);
     }
 
     @Override
     public ResultResponse<List<RegionRes>> getAllRegionList() {
-        return null;
+        return ipfsFileOperation.getAllRegionList();
     }
 
     @Override
     public ResultResponse<FileDetailRes> backupManagement(String filepath) {
-        return null;
+        return ipfsFileOperation.backupManagement(filepath);
     }
 
     @Override
     public ResultResponse<List<RegionRes>> getUsableRegionList(Long size) {
-        return null;
+        return ipfsFileOperation.getUsableRegionList(size);
     }
 
     @Override
     public ResultResponse<FileInfoRes> searchIpfsDirectorylist(String filepath, String fileName, String regionId) {
-        return null;
+        return ipfsFileOperation.searchIpfsDirectorylist(filepath, fileName, regionId);
     }
 
     @Override
     public ResultResponse<FileInfoRes> getIpfsDirectorylist(String filepath) {
-        return null;
+        return ipfsFileOperation.getIpfsDirectorylist(filepath);
     }
 
     @Override
     public ResultResponse<Boolean> deleteIpfsfile(String filepath, List<String> nodeids) {
-        return null;
+        return ipfsFileOperation.deleteIpfsfile(filepath, nodeids);
     }
 
     @Override
     public ResultResponse<Boolean> deleteIpfsfileList(List<String> filepathlist) {
-        return null;
+        return ipfsFileOperation.deleteIpfsfileList(filepathlist);
     }
 
     @Override
     public ResultResponse<Boolean> copyfile(String filepath, List<Integer> regionids) {
-        return null;
+        return ipfsFileOperation.copyfile(filepath, regionids);
     }
 
     @Override
-    public ResultResponse<Boolean> movefile(String filepath, String nodeid, Integer regionid) {
-        return null;
+    public ResultResponse<Boolean> movefile(String filepath, String nodeId, Integer regionId) {
+        return ipfsFileOperation.movefile(filepath, nodeId, regionId);
     }
 
     @Override
-    public ResultResponse<Boolean> movefileToDirectory(String directorypath, String filepath) {
-        return null;
+    public ResultResponse<Boolean> movefileToDirectory(String toDirectoryPath, String filepath) {
+        return ipfsFileOperation.movefileToDirectory(toDirectoryPath, filepath);
     }
 
     @Override
     public ResultResponse<Boolean> renameDirectory(String fromDirectoryPath, String toDirectoryPath) {
-        return null;
+        return ipfsFileOperation.renameDirectory(fromDirectoryPath, toDirectoryPath);
     }
 }

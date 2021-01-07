@@ -24,6 +24,18 @@ public class ResourePathConstant {
 
     public final static String DOWNLOAD_IPFS_SIGN = "/filesdk/ipfsDownloadSign";
     public final static String DOWNLOAD_IPFS = "/fs/cat";
+    public final static String IPFS_INSPECT_SIGN = "/filesdk/ipfsInspectsign";
+    public final static String GET_ALL_REGION_LIST = "/filesdk/getAllRegionList";
+    public final static String BACKUP_MANAGEMENT = "/filesdk/backupManagement";
+    public final static String GET_USABLE_REGION_LIST = "/filesdk/getUsableRegionList";
+    public final static String SEARCH_IPFS_DIRECTORYLIST = "/filesdk/searchIpfsDirectorylist";
+    public final static String GET_IPFS_DIRECTORYLIST = "/filesdk/getIpfsDirectorylist";
+    public final static String DELETE_IPFSFILE = "/filesdk/deleteIpfsfile";
+    public final static String DELETE_IPFSFILE_LIST = "/filesdk/deleteIpfsfileList";
+    public final static String COPYFILE = "/filesdk/copyfile";
+    public final static String MOVEFILE = "/filesdk/movefile";
+    public final static String MOVEFILE_TO_DIRECTORY = "/filesdk/movefileToDirectory";
+    public final static String RENAME_DIRECTORY = "/filesdk/renameDirectory";
 
 
 }

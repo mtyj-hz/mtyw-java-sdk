@@ -82,5 +82,25 @@ public class FileDetailRes {
         public void setRegionId(Integer regionId) {
             this.regionId = regionId;
         }
+
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "nodeid='" + nodeid + '\'' +
+                    ", regionName='" + regionName + '\'' +
+                    ", regionId=" + regionId +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "FileDetailRes{" +
+                "fileName='" + fileName + '\'' +
+                ", fileSize=" + fileSize +
+                ", cid='" + cid + '\'' +
+                ", nodeids=" + nodeids +
+                ", path='" + path + '\'' +
+                '}';
     }
 }

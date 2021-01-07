@@ -22,6 +22,7 @@ package com.mtyw.storage.common;
 import com.mtyw.storage.HttpMethod;
 import com.mtyw.storage.constant.MFSSConstants;
 import com.mtyw.storage.exception.MtywApiException;
+import com.mtyw.storage.util.HttpHeaders;
 import com.mtyw.storage.util.HttpUtil;
 import com.mtyw.storage.util.LogUtils;
 import org.apache.http.HttpMessage;
@@ -111,6 +112,9 @@ public abstract class ServiceClient {
         request.setHeaders(requestMessage.getHeaders());
         // The header must be converted after the request is signed,
         // otherwise the signature will be incorrect.
+        if (request.getHeaders().get(HttpHeaders.CONTENT_TYPE) == null) {
+            request.getHeaders().put(HttpHeaders.CONTENT_TYPE, MFSSConstants.DEFAULT_OBJECT_CONTENT_TYPE);
+        }
         if (request.getHeaders() != null) {
             HttpUtil.convertHeaderCharsetToIso88591(request.getHeaders());
         }
@@ -134,9 +138,10 @@ public abstract class ServiceClient {
         if (paramString != null ) {
             uri += "?" + paramString;
         }
+        long contentLength = requestMessage.getContentLength() == 0 ? -1 : requestMessage.getContentLength();
         request.setUrl(uri);
         request.setContent(requestMessage.getContent());
-        request.setContentLength(requestMessage.getContentLength());
+        request.setContentLength(contentLength);
 
         return request;
     }

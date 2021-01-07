@@ -103,10 +103,10 @@ public interface MFSS {
     ResultResponse<Boolean> copyfile(String filepath, List<Integer> regionids);
 
     // post
-    ResultResponse<Boolean> movefile(String filepath, String nodeid, Integer regionid);
+    ResultResponse<Boolean> movefile(String filepath, String nodeId, Integer regionId);
 
     // post
-    ResultResponse<Boolean> movefileToDirectory(String directorypath, String filepath);
+    ResultResponse<Boolean> movefileToDirectory(String toDirectoryPath, String filepath);
 
     // post
     ResultResponse<Boolean> renameDirectory(String fromDirectoryPath, String toDirectoryPath);

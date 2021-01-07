@@ -51,4 +51,15 @@ public class FileInspectRes {
     public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
+
+    @Override
+    public String toString() {
+        return "FileInspectRes{" +
+                "sign='" + sign + '\'' +
+                ", nodeip='" + nodeip + '\'' +
+                ", nodeAddr='" + nodeAddr + '\'' +
+                ", cid='" + cid + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }
