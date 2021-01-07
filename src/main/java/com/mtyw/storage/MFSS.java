@@ -25,9 +25,7 @@ import com.mtyw.storage.model.request.filecoin.CalculatePriceReq;
 import com.mtyw.storage.model.request.filecoin.RetrieveReq;
 import com.mtyw.storage.model.request.filecoin.UploadFileCoinFileReq;
 import com.mtyw.storage.model.response.ResultResponse;
-import com.mtyw.storage.model.response.filecoin.FileBalanceRes;
-import com.mtyw.storage.model.response.filecoin.FileRetrieveBalanceRes;
-import com.mtyw.storage.model.response.filecoin.FilecoinDateRes;
+import com.mtyw.storage.model.response.filecoin.*;
 import com.mtyw.storage.model.response.ipfs.FileDetailRes;
 import com.mtyw.storage.model.response.ipfs.FileInfoRes;
 import com.mtyw.storage.model.response.ipfs.FileInspectRes;
@@ -48,7 +46,6 @@ public interface MFSS {
     /**
      * ipfs创建文件夹
      */
-    // public Boolean uploadFile(String filePath) throws ApplicationException;
 
     ResultResponse  createdir(String parentpath, String dirname);
 
@@ -61,15 +58,23 @@ public interface MFSS {
      */
     ResultResponse uploadFilecoinFile(UploadFileCoinFileReq uploadIpfsFileRequest, CallBack callBack) throws MtywApiException;
 
+    /**
+     * filecoin冷备购买天数接口
+     * @return
+     */
     ResultResponse<List<FilecoinDateRes>> filecoinDatelist();
     /**
-     *
+     *  冷备计算价格
      */
     ResultResponse<FileBalanceRes> calculatePrice(CalculatePriceReq calculatePriceReq);
 
     ResultResponse<FileRetrieveBalanceRes> calculateRetrievePrice(Long size);
 
-    ResultResponse<Boolean> retrieve(RetrieveReq retrieveReq);
+    ResultResponse<List<NodeRes>> getFilecoinNodelist();
+
+    ResultResponse<List<FileCoinRes>> getFilecoinDirectorylist(Integer page, Integer limit);
+
+    ResultResponse<Boolean> retrieve(RetrieveReq retrieveReq) throws MtywApiException;
 
 
     ResultResponse<Void> downloadIpfsFile(String filePath, String saveDir);

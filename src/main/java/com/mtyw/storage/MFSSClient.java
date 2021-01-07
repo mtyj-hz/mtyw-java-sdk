@@ -12,9 +12,7 @@ import com.mtyw.storage.model.request.filecoin.RetrieveReq;
 import com.mtyw.storage.model.request.filecoin.UploadFileCoinFileReq;
 import com.mtyw.storage.model.request.ipfs.CreateDirRequest;
 import com.mtyw.storage.model.response.ResultResponse;
-import com.mtyw.storage.model.response.filecoin.FileBalanceRes;
-import com.mtyw.storage.model.response.filecoin.FileRetrieveBalanceRes;
-import com.mtyw.storage.model.response.filecoin.FilecoinDateRes;
+import com.mtyw.storage.model.response.filecoin.*;
 import com.mtyw.storage.model.response.ipfs.FileDetailRes;
 import com.mtyw.storage.model.response.ipfs.FileInfoRes;
 import com.mtyw.storage.model.response.ipfs.FileInspectRes;
@@ -78,14 +76,14 @@ public class MFSSClient implements MFSS{
     @Override
     public ResultResponse createdir(String parentpath, String dirname) {
         CreateDirRequest createDirRequest = new CreateDirRequest();
-        createDirRequest.setDirectoryName(parentpath);
-        createDirRequest.setParentpath(dirname);
+        createDirRequest.setDirectoryName(dirname);
+        createDirRequest.setParentpath(parentpath);
         ResultResponse response  = ipfsFileOperation.createDir(createDirRequest);
         return response;
     }
     @Override
-    public ResultResponse uploadFilecoinFile(UploadFileCoinFileReq uploadIpfsFileRequest, CallBack callBack) throws MtywApiException {
-        ResultResponse response  = fileCoinOperation.uploadFilecoinFile(uploadIpfsFileRequest, new CallBack(null,null));
+    public ResultResponse<String>  uploadFilecoinFile(UploadFileCoinFileReq uploadIpfsFileRequest, CallBack callBack) throws MtywApiException {
+        ResultResponse<String>  response  = fileCoinOperation.uploadFilecoinFile(uploadIpfsFileRequest, new CallBack(null,null));
         return response;
     }
 
@@ -106,12 +104,21 @@ public class MFSSClient implements MFSS{
         return resResultResponse;
     }
     @Override
+    public ResultResponse<List<NodeRes>> getFilecoinNodelist(){
+        return fileCoinOperation.getFilecoinNodelist();
+    }
+
+    @Override
+    public ResultResponse<List<FileCoinRes>> getFilecoinDirectorylist(Integer page, Integer limit){
+        return fileCoinOperation.getFilecoinDirectorylist( page, limit);
+    }
+    @Override
     public ResultResponse<FileRetrieveBalanceRes> calculateRetrievePrice(Long size){
         ResultResponse<FileRetrieveBalanceRes> resResultResponse = fileCoinOperation.calculateRetrievePrice( size);
         return resResultResponse;
     }
-
-    public ResultResponse<Boolean> retrieve(RetrieveReq retrieveReq){
+    @Override
+    public ResultResponse<Boolean> retrieve(RetrieveReq retrieveReq) throws MtywApiException{
         ResultResponse<Boolean> resResultResponse = fileCoinOperation.retrieve( retrieveReq);
         return resResultResponse;
     }

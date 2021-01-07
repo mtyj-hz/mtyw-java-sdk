@@ -58,7 +58,9 @@ public class Request extends HttpMesssage {
     public void addParameter(String key, String value) {
         this.parameters.put(key, value);
     }
-
+    public void addParameters(Map<String, String> parameters) {
+        this.parameters.putAll(parameters);
+    }
     public void removeParameter(String key) {
         this.parameters.remove(key);
     }

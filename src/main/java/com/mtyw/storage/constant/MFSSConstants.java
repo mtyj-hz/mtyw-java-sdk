@@ -34,12 +34,12 @@ public final class MFSSConstants {
 
     public static final String DEFAULT_MULTIPART_CONTENT_TYPE = "multipart/form-data;boundary="+HTTP_BODUNARY;
 
+    public static final Integer EXPIRETIME   = 300000;
 
     public static final int KB = 1024;
     public static final int DEFAULT_BUFFER_SIZE = 8 * KB;
     public static final int DEFAULT_STREAM_BUFFER_SIZE = 512 * KB;
 
-    public static final int EXPIRETIME = 300;
 
     public static final long DEFAULT_FILE_SIZE_LIMIT = 1 * 1024 * 1024 ;
 

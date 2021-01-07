@@ -18,7 +18,7 @@ public class CallBack {
     /**
      * 方法的传参
      */
-    Object  args;
+    Object[]  args;
     public CallBack(Object o, Method method) {
         ownobj = o;
         execute = method;
@@ -46,11 +46,11 @@ public class CallBack {
         this.execute = execute;
     }
 
-    public Object getArgs() {
+    public Object[] getArgs() {
         return args;
     }
 
-    public void setArgs(Object args) {
+    public void setArgs(Object[] args) {
         this.args = args;
     }
 }

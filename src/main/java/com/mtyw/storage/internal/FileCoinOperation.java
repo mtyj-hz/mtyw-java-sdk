@@ -13,10 +13,7 @@ import com.mtyw.storage.model.request.filecoin.RetrieveReq;
 import com.mtyw.storage.model.request.filecoin.UploadFileCoinFileReq;
 import com.mtyw.storage.model.request.filecoin.UploadFilecoinReq;
 import com.mtyw.storage.model.response.ResultResponse;
-import com.mtyw.storage.model.response.filecoin.FileBalanceRes;
-import com.mtyw.storage.model.response.filecoin.FileRetrieveBalanceRes;
-import com.mtyw.storage.model.response.filecoin.FilecoinDateRes;
-import com.mtyw.storage.model.response.filecoin.UploadFilecoinSignDTO;
+import com.mtyw.storage.model.response.filecoin.*;
 import com.mtyw.storage.util.HttpHeaders;
 
 import java.util.List;
@@ -29,7 +26,7 @@ public class FileCoinOperation extends FileCommonOperation {
     }
 
 
-    public ResultResponse uploadFilecoinFile(UploadFileCoinFileReq uploadFileCoinFileReq, CallBack callBack) throws MtywApiException {
+    public ResultResponse<String> uploadFilecoinFile(UploadFileCoinFileReq uploadFileCoinFileReq, CallBack callBack) throws MtywApiException {
         Request request = new MFSSRequestBuilder<>(uploadFileCoinFileReq,false).build();
         request.setResourcePath(ResourePathConstant.UPLOADFILECOINSIGN_RESOURCE);
         ResultResponse<UploadFilecoinSignDTO> uploadFilecoinSignDTO = commonParserExcute(request, UploadFilecoinSignDTO.class);
@@ -60,8 +57,9 @@ public class FileCoinOperation extends FileCommonOperation {
 
                 }
             }
+            return resultResponse;
         }
-        return ResultResponse.suc();
+        return ResultResponse.fail(uploadFilecoinSignDTO.getCode(),uploadFilecoinSignDTO.getMsg());
     }
 
     public ResultResponse<List<FilecoinDateRes>> filecoinDatelist(){
@@ -99,6 +97,21 @@ public class FileCoinOperation extends FileCommonOperation {
         Request request = new MFSSRequestBuilder<>(retrieveReq,false).build();
         request.setResourcePath(ResourePathConstant.FILECOIN_RETRIEVE_RESOURCE);
         ResultResponse<Boolean> resultResponse = commonParserExcute(request, Boolean.class);
+        return resultResponse;
+    }
+    public ResultResponse<List<NodeRes>> getFilecoinNodelist(){
+        Request request = new MFSSRequestBuilder<>().build();
+        request.setResourcePath(ResourePathConstant.FILECOIN_NODE_RESOURCE);
+        ResultResponse<List<NodeRes>> resultResponse = commonParserExcutelist(request, NodeRes.class);
+        return resultResponse;
+    }
+
+    public ResultResponse<List<FileCoinRes>> getFilecoinDirectorylist(Integer page,Integer limit){
+        Request request = new MFSSRequestBuilder<>().build();
+        request.addParameter("page",page.toString());
+        request.addParameter("limit",limit.toString());
+        request.setResourcePath(ResourePathConstant.FILECOIN_NODE_RESOURCE);
+        ResultResponse<List<FileCoinRes>> resultResponse = commonParserExcutelist(request, FileCoinRes.class);
         return resultResponse;
     }
 }

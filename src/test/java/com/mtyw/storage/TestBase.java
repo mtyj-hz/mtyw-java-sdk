@@ -19,15 +19,10 @@
 
 package com.mtyw.storage;
 
-import com.mtyw.storage.model.request.filecoin.UploadFileCoinFileRequest;
 import com.mtyw.storage.model.response.ResultResponse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.math.BigDecimal;
 public class TestBase {
     
     protected static MFSSClient mfssClient;
@@ -59,32 +54,7 @@ public class TestBase {
     @Test
     public  void downloadIpfsFile() {
 
-        ResultResponse resultResponse = mfssClient.downloadIpfsFile("/部署.md");
-    }
-    @Test
-    public  void uploadfile() {
-        UploadFileCoinFileRequest uploadIpfsFileRequest = new UploadFileCoinFileRequest();
-        uploadIpfsFileRequest.setFileName("sdk文件.txt");
-        InputStream inputStream = null;
-        Long length = 0l;
-        try{
-            inputStream = new FileInputStream("/Users/chenxiaoli/jihuo.txt");
-            length = Long.valueOf(inputStream.available());
-        }catch (Exception e) {
-
-        }
-        uploadIpfsFileRequest.setFileSize(length);
-
-        uploadIpfsFileRequest.setInputStream(inputStream);
-        uploadIpfsFileRequest.setDays(180);
-        uploadIpfsFileRequest.setUnitPrice(BigDecimal.valueOf(0.0002275));
-        uploadIpfsFileRequest.setMinPrice(BigDecimal.valueOf(1));
-        uploadIpfsFileRequest.setNodeId("rere");
-
-
-        ResultResponse resultResponse = mfssClient.uploadFilecoinFile(uploadIpfsFileRequest,null);
-        int aa =1;
-        return ;
+        ResultResponse resultResponse = mfssClient.downloadIpfsFile("/部署.md","");
     }
 
     public static void cleanUp() {

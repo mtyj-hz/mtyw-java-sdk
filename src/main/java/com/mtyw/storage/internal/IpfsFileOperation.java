@@ -1,6 +1,7 @@
 package com.mtyw.storage.internal;
 
 
+import com.mtyw.storage.HttpMethod;
 import com.mtyw.storage.common.*;
 import com.mtyw.storage.constant.ResourePathConstant;
 import com.mtyw.storage.model.request.ipfs.CreateDirRequest;
@@ -22,11 +23,11 @@ public class IpfsFileOperation extends FileCommonOperation {
         super(client, accessKey, accessSecret);
     }
 
-    public ResultResponse createDir(CreateDirRequest createDirRequest) {
+    public ResultResponse<Boolean> createDir(CreateDirRequest createDirRequest) {
         Request request = new MFSSRequestBuilder<>(createDirRequest,false).build();
         request.setResourcePath(ResourePathConstant.CREATEDIR_RESOURCE);
-        request.addHeader("token", "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI5MCIsImlhdCI6MTYwNzQyNTIyMn0.HGmoPPVMPfewPTdGFN4J3MnSAJBOx6GPb3eoV8fpdIE");
-        ResultResponse resultResponse = commonParserExcute(request, ResultResponse.class);
+        request.setMethod(HttpMethod.POST);
+        ResultResponse<Boolean> resultResponse = commonParserExcute(request, Boolean.class);
         return resultResponse;
     }
 

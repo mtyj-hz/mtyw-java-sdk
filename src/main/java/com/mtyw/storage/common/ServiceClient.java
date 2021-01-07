@@ -108,19 +108,13 @@ public abstract class ServiceClient {
 
         Request request = new Request();
         request.setMethod(requestMessage.getMethod());
-
         request.setHeaders(requestMessage.getHeaders());
         // The header must be converted after the request is signed,
         // otherwise the signature will be incorrect.
         if (request.getHeaders() != null) {
             HttpUtil.convertHeaderCharsetToIso88591(request.getHeaders());
         }
-
         final String delimiter = "/";
-
-
-
-
         String uri = this.uri.toString();
         if (requestMessage.getUrl() != null && !requestMessage.getUrl().equals("")) {
             URI url = toURI(requestMessage.getUrl());
@@ -135,37 +129,14 @@ public abstract class ServiceClient {
             uri += requestMessage.getResourcePath();
         }
         //todo
-        requestMessage.addParameter("accessKey","8888");
         String paramString = HttpUtil.paramToQueryString(requestMessage.getParameters(), MFSSConstants.DEFAULT_CHARSET_NAME);
-        /*
-         * For all non-POST requests, and any POST requests that already have a
-         * payload, we put the encoded params directly in the URI, otherwise,
-         * we'll put them in the POST request's payload.
-         */
-        boolean requestHasNoPayload = requestMessage.getContent() != null;
-        boolean requestIsPost = requestMessage.getMethod() == HttpMethod.POST;
-        boolean putParamsInUri = !requestIsPost || requestHasNoPayload;
-        if (paramString != null && putParamsInUri) {
+
+        if (paramString != null ) {
             uri += "?" + paramString;
         }
-
         request.setUrl(uri);
-
-        if (requestIsPost && requestMessage.getContent() == null && paramString != null) {
-            // Put the param string to the request body if POSTing and
-            // no content.
-            try {
-                byte[] buf = paramString.getBytes(MFSSConstants.DEFAULT_CHARSET_NAME);
-                ByteArrayInputStream content = new ByteArrayInputStream(buf);
-                request.setContent(content);
-                request.setContentLength(buf.length);
-            } catch (UnsupportedEncodingException e) {
-                throw new RuntimeException(e.getMessage());
-            }
-        } else {
-            request.setContent(requestMessage.getContent());
-            request.setContentLength(requestMessage.getContentLength());
-        }
+        request.setContent(requestMessage.getContent());
+        request.setContentLength(requestMessage.getContentLength());
 
         return request;
     }

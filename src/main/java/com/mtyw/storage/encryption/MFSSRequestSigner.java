@@ -20,17 +20,18 @@
 package com.mtyw.storage.encryption;
 
 import com.mtyw.storage.common.Request;
+import com.mtyw.storage.constant.MFSSConstants;
 import com.mtyw.storage.exception.MtywApiException;
 import com.mtyw.storage.util.HttpHeaders;
 import com.mtyw.storage.util.SignUtil;
-import com.sun.tools.javac.code.Types;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MFSSRequestSigner implements RequestSigner {
-
     private String accesskey;
     private String accesssecret;
-
-
 
     public MFSSRequestSigner(String accesskey, String accesssecret) {
         this.accesskey = accesskey;
@@ -41,14 +42,25 @@ public class MFSSRequestSigner implements RequestSigner {
     public void sign(Request request) throws MtywApiException {
         String accessKeyId = this.accesskey;
         String secretAccessKey = this.accesssecret;
-
         if (accessKeyId.length() > 0 && secretAccessKey.length() > 0) {
+            Map<String, Object> map = new HashMap<>();
+            map.putAll(request.getParameters());
+            Map<String,String> mapCommon = getCommonreq(this.accesskey);
+            map.putAll(mapCommon);
+            request.addParameters(mapCommon);
             String signature;
-            //todo
-            //signature = SignUtil.sign(null,null,null,"");
-            request.addHeader(HttpHeaders.AUTHORIZATION, "signtest");
-
+            signature = SignUtil.sign(map, Arrays.asList("accesskey", "timestamp")
+                    , Arrays.asList("accesskey", "timestamp"), "2");
+            request.addHeader(HttpHeaders.AUTHORIZATION, signature);
         }
+    }
+
+    private Map<String, String> getCommonreq(String accesskey) {
+        Map<String, String> req = new HashMap<>();
+        Long timestamp = System.currentTimeMillis() + MFSSConstants.EXPIRETIME;
+        req.put("accesskey", accesskey);
+        req.put("timestamp", timestamp.toString());
+        return req;
     }
 
     public String getAccesskey() {

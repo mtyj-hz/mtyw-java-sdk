@@ -10,10 +10,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @Author: xiaoli
- * @Date: 2020/12/28 10:23 上午
- */
 public class SignUtil {
 
     public final static String equalsymbol = "=";
