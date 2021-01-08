@@ -20,6 +20,13 @@ public class ResourePathConstant {
 
 
 
+    public final static String UPLOAD_IPFS_SIGN_RESOURCE = "/filesdk/uploadIpfsSign";
+
+    public final static String UPLOAD_IPFS_CHECKPOINT_RESOURCE = "/filesdk/ipfsCheckpoint";
+
+    public final static String UPLOAD_IPFS_ADD_RESOURCE = "/fs/ipfsAdd";
+
+
 
 
     public final static String DOWNLOAD_IPFS_SIGN = "/filesdk/ipfsDownloadSign";

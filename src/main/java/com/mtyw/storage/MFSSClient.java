@@ -11,6 +11,7 @@ import com.mtyw.storage.model.request.filecoin.CalculatePriceReq;
 import com.mtyw.storage.model.request.filecoin.RetrieveReq;
 import com.mtyw.storage.model.request.filecoin.UploadFileCoinFileReq;
 import com.mtyw.storage.model.request.ipfs.CreateDirRequest;
+import com.mtyw.storage.model.request.ipfs.UploadIpfsFileReq;
 import com.mtyw.storage.model.response.ResultResponse;
 import com.mtyw.storage.model.response.filecoin.*;
 import com.mtyw.storage.model.response.ipfs.*;
@@ -113,6 +114,11 @@ public class MFSSClient implements MFSS {
     @Override
     public ResultResponse<List<FileCoinRes>> getFilecoinDirectorylist(Integer page, Integer limit){
         return fileCoinOperation.getFilecoinDirectorylist( page, limit);
+    }
+    @Override
+    public ResultResponse<String> uploadIpfsFile(UploadIpfsFileReq uploadIpfsFileReq, CallBack callBackReceiveRequestid, CallBack callBackFinish){
+        ResultResponse<String> ipfsFile = ipfsFileOperation.uploadIpfsFile(uploadIpfsFileReq, callBackReceiveRequestid, callBackFinish);
+        return ipfsFile;
     }
     @Override
     public ResultResponse<FileRetrieveBalanceRes> calculateRetrievePrice(Long size) {

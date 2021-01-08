@@ -33,6 +33,8 @@ public final class MFSSConstants {
     public static  final String HTTP_BODUNARY="----WebKitFormBoundaryRykOn5CIfLK3mb3m";
 
     public static final String DEFAULT_MULTIPART_CONTENT_TYPE = "multipart/form-data;boundary="+HTTP_BODUNARY;
+    public static final String RANGE_HEADER = "bytes= %d-";
+
 
     public static final Integer EXPIRETIME   = 300000;
 

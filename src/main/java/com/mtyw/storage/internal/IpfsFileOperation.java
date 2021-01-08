@@ -5,9 +5,8 @@ import com.mtyw.storage.HttpMethod;
 import com.mtyw.storage.common.*;
 import com.mtyw.storage.constant.MFSSConstants;
 import com.mtyw.storage.constant.ResourePathConstant;
-import com.mtyw.storage.model.request.ipfs.CreateDirRequest;
-import com.mtyw.storage.model.request.ipfs.DownloadIpfsFileRequest;
-import com.mtyw.storage.model.request.ipfs.ObjectGetReq;
+import com.mtyw.storage.exception.MtywApiException;
+import com.mtyw.storage.model.request.ipfs.*;
 import com.mtyw.storage.model.response.ResultResponse;
 import com.mtyw.storage.model.response.ipfs.*;
 import com.mtyw.storage.util.HttpHeaders;
@@ -22,14 +21,76 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.mtyw.storage.constant.MFSSConstants.DEFAULT_MULTIPART_CONTENT_TYPE;
+import static com.mtyw.storage.constant.MFSSConstants.*;
+import static com.mtyw.storage.util.LogUtils.logException;
 
 public class IpfsFileOperation extends FileCommonOperation {
 
     public IpfsFileOperation(ServiceClient client, String accessKey, String accessSecret) {
         super(client, accessKey, accessSecret);
     }
+    public ResultResponse<String> uploadIpfsFile(UploadIpfsFileReq uploadIpfsFileReq, CallBack callBackReceiveRequestid, CallBack callBackFinish) throws MtywApiException {
+        Request request = new MFSSRequestBuilder<>(uploadIpfsFileReq,false).build();
+        request.setResourcePath(ResourePathConstant.UPLOAD_IPFS_SIGN_RESOURCE);
+        ResultResponse<UploadIpfsSignDTO> uploadIpfsSignDTO = commonParserExcute(request, UploadIpfsSignDTO.class);
+        if (uploadIpfsSignDTO.isSuccess()) {
+            if (callBackReceiveRequestid != null) {
+                try{
+                    callBackReceiveRequestid.invoke(callBackReceiveRequestid.getArgs());
+                }catch (Exception e) {
+                    logException("Unable to invoke callBackReceiveRequestid error: ", e.getMessage());
+                }
+            }
+            UploadIpfsAddReq uploadFilecoinReq = new UploadIpfsAddReq();
+            uploadFilecoinReq.setExpire(uploadIpfsSignDTO.getData().getExpiretime());
+            uploadFilecoinReq.setFilepath(uploadIpfsSignDTO.getData().getFilepath());
+            uploadFilecoinReq.setSign(uploadIpfsSignDTO.getData().getSign());
+            uploadFilecoinReq.setTimestamp(uploadIpfsSignDTO.getData().getTimestamp());
+            uploadFilecoinReq.setFilesize(uploadIpfsSignDTO.getData().getFilesize());
+            uploadFilecoinReq.setNodeip(uploadIpfsSignDTO.getData().getNodeIp());
+            uploadFilecoinReq.setRegions(uploadIpfsSignDTO.getData().getRegionid());
+            uploadFilecoinReq.setUploadid(uploadIpfsSignDTO.getData().getUploadid());
+            uploadFilecoinReq.setUserid(uploadIpfsSignDTO.getData().getUserid());
+            Request uploadFilecoinSignReq = new MFSSRequestBuilder<>(uploadFilecoinReq,false).build();
+            uploadFilecoinSignReq.setResourcePath(ResourePathConstant.UPLOAD_IPFS_ADD_RESOURCE);
+            uploadFilecoinSignReq.addHeader(HttpHeaders.CONTENT_TYPE, DEFAULT_MULTIPART_CONTENT_TYPE);
+            if (uploadIpfsFileReq.getUploadRequestId()!= null && uploadIpfsFileReq.getUploadRequestId() > 0) {
+                UploadIpfsCheckpointReq uploadIpfsCheckpointReq = new UploadIpfsCheckpointReq();
+                uploadIpfsCheckpointReq.setFilepath(uploadIpfsFileReq.getFilepath());
+                uploadIpfsCheckpointReq.setUploadid(uploadIpfsFileReq.getUploadRequestId().intValue());
+                Long checkpoint = getCheckpoint(uploadIpfsCheckpointReq);
+                uploadFilecoinSignReq.addHeader(HttpHeaders.RANGE, String.format(RANGE_HEADER, checkpoint));
+            }else {
+                uploadFilecoinSignReq.addHeader(HttpHeaders.RANGE, String.format(RANGE_HEADER, 0));
 
+            }
+            uploadFilecoinSignReq.addHeader(HttpHeaders.CONNECTION, HTTP_OBJECT_CONNECTION);
+            uploadFilecoinSignReq.setMethod(HttpMethod.POST);
+            uploadFilecoinSignReq.setContentLength(uploadIpfsFileReq.getFileSize());
+            uploadFilecoinSignReq.setContent(uploadIpfsFileReq.getInputStream());
+            uploadFilecoinSignReq.setUrl(uploadIpfsSignDTO.getData().getNodeAddr());
+            ResultResponse<String> resultResponse = commonParserExcute(uploadFilecoinSignReq, String.class);
+            if (callBackFinish != null) {
+                try{
+                    callBackFinish.invoke(callBackFinish.getArgs());
+                }catch (Exception e) {
+                    logException("Unable to invoke callBackFinish error: ", e.getMessage());
+                }
+            }
+            return resultResponse;
+        }
+        return ResultResponse.fail(uploadIpfsSignDTO.getCode(), uploadIpfsSignDTO.getMsg());
+    }
+
+    private Long getCheckpoint(UploadIpfsCheckpointReq uploadIpfsCheckpointReq) {
+        Request request = new MFSSRequestBuilder<>(uploadIpfsCheckpointReq,false).build();
+        request.setResourcePath(ResourePathConstant.UPLOAD_IPFS_CHECKPOINT_RESOURCE);
+        ResultResponse<Long> checkpoint = commonParserExcute(request, Long.class);
+        if (checkpoint.isSuccess()) {
+            return checkpoint.getData();
+        }
+        return 0l;
+    }
     public ResultResponse<Boolean> createDir(CreateDirRequest createDirRequest) {
         Request request = new MFSSRequestBuilder<>(createDirRequest, false).build();
         request.setResourcePath(ResourePathConstant.CREATEDIR_RESOURCE);

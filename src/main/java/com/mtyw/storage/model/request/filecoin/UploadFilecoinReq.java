@@ -1,5 +1,8 @@
 package com.mtyw.storage.model.request.filecoin;
 
+import com.mtyw.storage.annotation.Null;
+import com.sun.istack.internal.NotNull;
+
 public class UploadFilecoinReq {
 
     private String sign;

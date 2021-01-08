@@ -24,6 +24,7 @@ import com.mtyw.storage.exception.MtywApiException;
 import com.mtyw.storage.model.request.filecoin.CalculatePriceReq;
 import com.mtyw.storage.model.request.filecoin.RetrieveReq;
 import com.mtyw.storage.model.request.filecoin.UploadFileCoinFileReq;
+import com.mtyw.storage.model.request.ipfs.UploadIpfsFileReq;
 import com.mtyw.storage.model.response.ResultResponse;
 import com.mtyw.storage.model.response.filecoin.*;
 import com.mtyw.storage.model.response.ipfs.*;
@@ -46,6 +47,14 @@ public interface MFSS {
 
     ResultResponse  createdir(String parentpath, String dirname);
 
+    /**
+     * ipfs断点续传
+     * @param uploadIpfsFileReq 上传信息请求
+     * @param callBackReceiveRequestid 接收上传id信息回调， 中途上传断开，断点续传需要用到接口返回的id
+     * @param callBackFinish 上传完成后回调
+     * @return
+     */
+    ResultResponse<String> uploadIpfsFile(UploadIpfsFileReq uploadIpfsFileReq, CallBack callBackReceiveRequestid, CallBack callBackFinish);
     /**
      * 上传文件到filecoin
      * @param uploadIpfsFileRequest 文件相关信息

@@ -41,7 +41,7 @@ public class TestBase {
     
     public static MFSSClient getMFSSClient() {
         if (mfssClient == null) {
-            mfssClient = new MFSSClient("http://127.0.0.1:8040","1","2");
+            mfssClient = new MFSSClient("http://10.0.0.3:8040/api","1","2");
         }
         return mfssClient;
     }
@@ -53,8 +53,8 @@ public class TestBase {
     }
     @Test
     public  void downloadIpfsFile() {
-        ResultResponse<Void> resultResponse = mfssClient.downloadIpfsFile("/8A90EE80-CE9D-47D1-A0C8-0D1C1DD1621B.jpeg", "/Users/hsw/Desktop");
-        System.out.println(resultResponse);
+
+        ResultResponse resultResponse = mfssClient.downloadIpfsFile("/部署.md","");
     }
 
     public static void cleanUp() {
@@ -63,5 +63,5 @@ public class TestBase {
             mfssClient = null;
         }
     }
-    }
+}
 

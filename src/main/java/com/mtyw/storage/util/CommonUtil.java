@@ -1,5 +1,6 @@
 package com.mtyw.storage.util;
 
+import com.mtyw.storage.annotation.Null;
 import org.apache.http.ParseException;
 
 import java.io.ByteArrayOutputStream;
@@ -43,11 +44,15 @@ public class CommonUtil {
             Field[] fields = entity.getDeclaredFields();//获取该类的所有成员变量（私有的）
             for (Field field : fields) {
                 try {
+
+                if (!field.isAnnotationPresent(Null.class)) {
                     field.setAccessible(true);
                     if (field.get(object) == null || "".equals(field.get(object))) {
                         flag = true;
                         break;
                     }
+                }
+
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }

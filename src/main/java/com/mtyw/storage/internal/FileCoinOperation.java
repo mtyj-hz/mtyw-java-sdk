@@ -12,6 +12,7 @@ import com.mtyw.storage.model.request.filecoin.CalculatePriceReq;
 import com.mtyw.storage.model.request.filecoin.RetrieveReq;
 import com.mtyw.storage.model.request.filecoin.UploadFileCoinFileReq;
 import com.mtyw.storage.model.request.filecoin.UploadFilecoinReq;
+import com.mtyw.storage.model.request.ipfs.UploadIpfsCallbackReq;
 import com.mtyw.storage.model.response.ResultResponse;
 import com.mtyw.storage.model.response.filecoin.*;
 import com.mtyw.storage.util.HttpHeaders;
@@ -41,18 +42,22 @@ public class FileCoinOperation extends FileCommonOperation {
             uploadFilecoinReq.setFileSize(uploadFilecoinSignDTO.getData().getFileSize());
             uploadFilecoinReq.setUploadId(uploadFilecoinSignDTO.getData().getUploadId());
             uploadFilecoinReq.setUserId(uploadFilecoinSignDTO.getData().getUserId());
-            Request uploadFilecoinSignRequest = new MFSSRequestBuilder<>(uploadFilecoinReq,false).build();
-            uploadFilecoinSignRequest.setResourcePath(ResourePathConstant.UPLOADFILECOIN_RESOURCE);
-            uploadFilecoinSignRequest.addHeader(HttpHeaders.CONTENT_TYPE, DEFAULT_MULTIPART_CONTENT_TYPE);
-            uploadFilecoinSignRequest.addHeader(HttpHeaders.CONNECTION, HTTP_OBJECT_CONNECTION);
-            uploadFilecoinSignRequest.setMethod(HttpMethod.POST);
-            uploadFilecoinSignRequest.setContentLength(uploadFileCoinFileReq.getFileSize());
-            uploadFilecoinSignRequest.setContent(uploadFileCoinFileReq.getInputStream());
-            uploadFilecoinSignRequest.setUrl(uploadFilecoinSignDTO.getData().getNodeAddr());
-            ResultResponse<String> resultResponse = commonParserExcute(uploadFilecoinSignRequest, String.class);
+            Request uploadFilecoinSignReq = new MFSSRequestBuilder<>(uploadFilecoinReq,false).build();
+            uploadFilecoinSignReq.setResourcePath(ResourePathConstant.UPLOADFILECOIN_RESOURCE);
+            uploadFilecoinSignReq.addHeader(HttpHeaders.CONTENT_TYPE, DEFAULT_MULTIPART_CONTENT_TYPE);
+            uploadFilecoinSignReq.addHeader(HttpHeaders.CONNECTION, HTTP_OBJECT_CONNECTION);
+            uploadFilecoinSignReq.setMethod(HttpMethod.POST);
+            uploadFilecoinSignReq.setContentLength(uploadFileCoinFileReq.getFileSize());
+            uploadFilecoinSignReq.setContent(uploadFileCoinFileReq.getInputStream());
+            uploadFilecoinSignReq.setUrl(uploadFilecoinSignDTO.getData().getNodeAddr());
+            ResultResponse<String> resultResponse = commonParserExcute(uploadFilecoinSignReq, String.class);
             if (callBack != null) {
                 try{
-                    callBack.invoke(callBack.getArgs());
+                    UploadIpfsCallbackReq uploadIpfsCallbackReq = new UploadIpfsCallbackReq();
+                    uploadIpfsCallbackReq.setUploadid(uploadFilecoinSignDTO.getData().getUploadId());
+                    uploadIpfsCallbackReq.setFilepath(uploadFilecoinSignDTO.getData().getFilepath());
+                    uploadIpfsCallbackReq.setSuccess(true);
+                    callBack.invoke(uploadIpfsCallbackReq);
                 }catch (Exception e) {
 
                 }
