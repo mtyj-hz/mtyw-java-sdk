@@ -14,8 +14,19 @@ public class ObjectGetRes {
 
 
     static class ObjectLink {
+        /**
+         * 名称
+         */
         private String name;
+
+        /**
+         * hash
+         */
         private String hash;
+
+        /**
+         * 大小
+         */
         private Long size;
 
         public String getName() {

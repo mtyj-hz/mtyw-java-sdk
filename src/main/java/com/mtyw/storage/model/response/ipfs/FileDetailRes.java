@@ -8,10 +8,26 @@ import java.util.List;
  */
 public class FileDetailRes {
 
+    /**
+     * 文件名
+     */
     private String fileName;
+
+    /**
+     * 文件大小
+     */
     private Long fileSize;
+
+    /**
+     * 文件cid
+     */
     private String cid;
+
     private List<Node> nodeids;
+
+    /**
+     * 文件路径
+     */
     private String path;
 
     public String getFileName() {
@@ -55,8 +71,19 @@ public class FileDetailRes {
     }
 
     public static class Node{
+        /**
+         * 节点id
+         */
         private String nodeid;
+
+        /**
+         * 机房名称
+         */
         private String regionName;
+
+        /**
+         * 机房id
+         */
         private Integer regionId;
 
         public String getNodeid() {

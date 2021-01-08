@@ -8,6 +8,10 @@ import java.util.List;
  */
 public class FileInfoRes {
     private List<FileVO> fileVOS;
+
+    /**
+     * 父路径
+     */
     private String parentPath;
 
     public List<FileVO> getFileVOS() {

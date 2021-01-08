@@ -7,12 +7,37 @@ import java.util.List;
  * @Date 11:19 2021/1/7
  */
 public class FileVO {
+
+    /**
+     * 文件名称
+     */
     private String fileName;
+
+    /**
+     * 文件大小
+     */
     private Long fileSize;
+
+    /**
+     * 文件cid
+     */
     private String cid;
+
     private List<Node> nodeids;
+
+    /**
+     * 时间戳
+     */
     private Long timestamp;
+
+    /**
+     * 文件路径
+     */
     private String path;
+
+    /*
+    文件类型
+     */
     private Integer type;
 
     public String getFileName() {
@@ -71,9 +96,20 @@ public class FileVO {
         this.type = type;
     }
 
-    public static class Node{
+    public static class Node {
+        /**
+         * 节点id
+         */
         private String nodeid;
+
+        /**
+         * 机房名称
+         */
         private String regionName;
+
+        /**
+         * 机房id
+         */
         private Integer regionId;
 
         public String getNodeid() {

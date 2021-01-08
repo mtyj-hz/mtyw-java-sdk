@@ -6,7 +6,14 @@ package com.mtyw.storage.model.response.ipfs;
  */
 public class RegionRes {
 
+    /**
+     * 机房名称
+     */
     private String regionName;
+
+    /**
+     * 机房id
+     */
     private Integer regioneId;
 
     public String getRegionName() {
