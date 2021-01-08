@@ -26,10 +26,7 @@ import com.mtyw.storage.model.request.filecoin.RetrieveReq;
 import com.mtyw.storage.model.request.filecoin.UploadFileCoinFileReq;
 import com.mtyw.storage.model.response.ResultResponse;
 import com.mtyw.storage.model.response.filecoin.*;
-import com.mtyw.storage.model.response.ipfs.FileDetailRes;
-import com.mtyw.storage.model.response.ipfs.FileInfoRes;
-import com.mtyw.storage.model.response.ipfs.FileInspectRes;
-import com.mtyw.storage.model.response.ipfs.RegionRes;
+import com.mtyw.storage.model.response.ipfs.*;
 
 import java.util.List;
 
@@ -81,7 +78,7 @@ public interface MFSS {
 
 //    ResultResponse<Boolean> spaceInspection(Long size);
 
-    ResultResponse<FileInspectRes> ipfsInspectsign(String filepath);
+    ResultResponse<ObjectGetRes> objectGet(String filepath);
 
     ResultResponse<List<RegionRes>> getAllRegionList();
 

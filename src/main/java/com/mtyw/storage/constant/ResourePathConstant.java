@@ -24,6 +24,7 @@ public class ResourePathConstant {
 
     public final static String DOWNLOAD_IPFS_SIGN = "/filesdk/ipfsDownloadSign";
     public final static String DOWNLOAD_IPFS = "/fs/cat";
+    public final static String OBJECT_GET = "/object/get";
     public final static String IPFS_INSPECT_SIGN = "/filesdk/ipfsInspectsign";
     public final static String GET_ALL_REGION_LIST = "/filesdk/getAllRegionList";
     public final static String BACKUP_MANAGEMENT = "/filesdk/backupManagement";

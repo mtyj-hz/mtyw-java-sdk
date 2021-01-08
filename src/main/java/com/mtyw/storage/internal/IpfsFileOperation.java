@@ -7,6 +7,7 @@ import com.mtyw.storage.constant.MFSSConstants;
 import com.mtyw.storage.constant.ResourePathConstant;
 import com.mtyw.storage.model.request.ipfs.CreateDirRequest;
 import com.mtyw.storage.model.request.ipfs.DownloadIpfsFileRequest;
+import com.mtyw.storage.model.request.ipfs.ObjectGetReq;
 import com.mtyw.storage.model.response.ResultResponse;
 import com.mtyw.storage.model.response.ipfs.*;
 import com.mtyw.storage.util.HttpHeaders;
@@ -58,10 +59,19 @@ public class IpfsFileOperation extends FileCommonOperation {
         return ResultResponse.suc();
     }
 
-    public ResultResponse<FileInspectRes> ipfsInspectsign(String filepath) {
+    public ResultResponse<ObjectGetRes> objectGet(String filepath) {
         Request request = new MFSSRequestBuilder<>("filepath", filepath).build();
         request.setResourcePath(ResourePathConstant.IPFS_INSPECT_SIGN);
-        return commonParserExcute(request, FileInspectRes.class);
+        ResultResponse<FileInspectRes> sign = commonParserExcute(request, FileInspectRes.class);
+        if (!sign.isSuccess()) {
+            return ResultResponse.fail(sign.getMsg());
+        }
+        FileInspectRes data = sign.getData();
+        ObjectGetReq getReq = new ObjectGetReq(data.getNodeip(), data.getCid(), data.getSign(), data.getTimestamp());
+        Request getR = new MFSSRequestBuilder<>(getReq, false).build();
+        getR.setResourcePath(ResourePathConstant.OBJECT_GET);
+        getR.setUrl(data.getNodeAddr());
+        return commonParserExcute(getR, ObjectGetRes.class);
     }
 
 

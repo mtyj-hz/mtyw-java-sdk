@@ -13,10 +13,7 @@ import com.mtyw.storage.model.request.filecoin.UploadFileCoinFileReq;
 import com.mtyw.storage.model.request.ipfs.CreateDirRequest;
 import com.mtyw.storage.model.response.ResultResponse;
 import com.mtyw.storage.model.response.filecoin.*;
-import com.mtyw.storage.model.response.ipfs.FileDetailRes;
-import com.mtyw.storage.model.response.ipfs.FileInfoRes;
-import com.mtyw.storage.model.response.ipfs.FileInspectRes;
-import com.mtyw.storage.model.response.ipfs.RegionRes;
+import com.mtyw.storage.model.response.ipfs.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -130,8 +127,8 @@ public class MFSSClient implements MFSS {
     }
 
     @Override
-    public ResultResponse<FileInspectRes> ipfsInspectsign(String filepath) {
-        return ipfsFileOperation.ipfsInspectsign(filepath);
+    public ResultResponse<ObjectGetRes> objectGet(String filepath) {
+        return ipfsFileOperation.objectGet(filepath);
     }
 
     @Override
