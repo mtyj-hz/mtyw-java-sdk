@@ -83,38 +83,92 @@ public interface MFSS {
     ResultResponse<Boolean> retrieve(RetrieveReq retrieveReq) throws MtywApiException;
 
 
+    /**
+     * 下载ipfs文件
+     * @param filePath  文件路径
+     * @param saveDir   存储目录
+     */
     ResultResponse<Void> downloadIpfsFile(String filePath, String saveDir);
 
 //    ResultResponse<Boolean> spaceInspection(Long size);
 
+    /**
+     * 文件检查
+     * @param filepath  文件路径
+     */
     ResultResponse<ObjectGetRes> objectGet(String filepath);
 
+    /**
+     * 获取所有节点
+     */
     ResultResponse<List<RegionRes>> getAllRegionList();
 
+    /**
+     * 备份文件
+     * @param filepath  文件路径
+     */
     ResultResponse<FileDetailRes> backupManagement(String filepath);
 
+    /**
+     * 获取所有可用节点
+     * @param size  目标大小
+     */
     ResultResponse<List<RegionRes>> getUsableRegionList(Long size);
 
+    /**
+     * 检索ipfs文件和文件目录
+     * @param filepath  文件路径
+     * @param fileName  文件名
+     * @param regionId  节点id
+     */
     ResultResponse<FileInfoRes> searchIpfsDirectorylist(String filepath, String fileName, String regionId);
 
+    /**
+     * 获取ipfs文件和文件目录
+     * @param filepath  文件路径
+     */
     ResultResponse<FileInfoRes> getIpfsDirectorylist(String filepath);
 
-    // post
+    /**
+     * 删除ipfs文件
+     * @param filepath  文件路径
+     * @param nodeids   节点id数组
+     */
     ResultResponse<Boolean> deleteIpfsfile(String filepath, List<String> nodeids);
 
-    // post
+    /**
+     * 批量删除ipfs文件
+     * @param filepathlist  文件路径列表
+     */
     ResultResponse<Boolean> deleteIpfsfileList(List<String> filepathlist);
 
-    // post
+    /**
+     * 复制文件
+     * @param filepath  文件路径
+     * @param regionids 节点id数组
+     */
     ResultResponse<Boolean> copyfile(String filepath, List<Integer> regionids);
 
-    // post
+    /**
+     * 移动文件
+     * @param filepath  文件路径
+     * @param nodeId    节点id
+     * @param regionId  机房id
+     */
     ResultResponse<Boolean> movefile(String filepath, String nodeId, Integer regionId);
 
-    // post
+    /**
+     * 文件移动到文件目录
+     * @param toDirectoryPath   目标文件路径
+     * @param filepath          文件路径
+     */
     ResultResponse<Boolean> movefileToDirectory(String toDirectoryPath, String filepath);
 
-    // post
+    /**
+     * 重命名文件夹
+     * @param fromDirectoryPath 源文件夹路径
+     * @param toDirectoryPath   目标文件路径
+     */
     ResultResponse<Boolean> renameDirectory(String fromDirectoryPath, String toDirectoryPath);
 
 
