@@ -9,6 +9,7 @@ import org.apache.http.client.methods.*;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Map.Entry;
 
 class HttpRequestFactory {
@@ -24,7 +25,7 @@ class HttpRequestFactory {
                     //HttpEntity builder
                     MultipartEntityBuilder builder = MultipartEntityBuilder.create();
                     //字符编码
-                    builder.setCharset(Charset.forName("UTF-8"));
+                    builder.setCharset(StandardCharsets.UTF_8);
                     //boundary
                     builder.setBoundary(MFSSConstants.HTTP_BODUNARY);
                     //multipart/form-data

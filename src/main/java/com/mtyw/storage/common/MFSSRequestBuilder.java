@@ -44,15 +44,26 @@ public class MFSSRequestBuilder<T> {
 
     public MFSSRequestBuilder(T ob, Boolean postbody) {
        if (postbody) {
-           InputStream inputStream = objToInputstream(ob);
-           this.inputStream = inputStream;
-       }else {
+           this.inputStream = objToInputstream(ob);
+       } else {
            Map<String, String> mapParams = objToMapParam(ob);
            this.parameters.putAll(mapParams);
        }
     }
+
+    public MFSSRequestBuilder(String paramName, T ob) {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put(paramName, ob.toString());
+        this.parameters.putAll(params);
+    }
+
+    public MFSSRequestBuilder(Map<String, String> parameters) {
+        this.parameters.putAll(parameters);
+    }
+
     public MFSSRequestBuilder() {
     }
+
     public HttpMethod getMethod() {
         return method;
     }
@@ -148,7 +159,7 @@ public class MFSSRequestBuilder<T> {
         return map;
     }
 
-    private static InputStream objToInputstream(Object obj) {
+    public static InputStream objToInputstream(Object obj) {
         Boolean paramcheck = CommonUtil.isObjectFieldEmpty(obj) ;
         if (paramcheck) {
             throw new MtywApiException(MtExceptionEnum.ILLEGAL_PARAM);

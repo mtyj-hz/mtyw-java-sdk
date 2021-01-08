@@ -25,4 +25,12 @@ public class FileInfoRes {
     public void setParentPath(String parentPath) {
         this.parentPath = parentPath;
     }
+
+    @Override
+    public String toString() {
+        return "FileInfoRes{" +
+                "fileVOS=" + fileVOS +
+                ", parentPath='" + parentPath + '\'' +
+                '}';
+    }
 }

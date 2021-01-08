@@ -24,4 +24,12 @@ public class RegionRes {
     public void setRegioneId(Integer regioneId) {
         this.regioneId = regioneId;
     }
+
+    @Override
+    public String toString() {
+        return "RegionRes{" +
+                "regionName='" + regionName + '\'' +
+                ", regioneId=" + regioneId +
+                '}';
+    }
 }
