@@ -45,7 +45,7 @@ public class MFSSRequestSigner implements RequestSigner {
         if (accessKeyId.length() > 0 && secretAccessKey.length() > 0) {
             Map<String, Object> map = new HashMap<>();
             map.putAll(request.getParameters());
-            Map<String,String> mapCommon = getCommonreq(this.accesskey);
+            Map<String,String> mapCommon = getCommonreq(this.accesskey,request.getParameters());
             map.putAll(mapCommon);
             request.addParameters(mapCommon);
             String signature;
@@ -55,11 +55,13 @@ public class MFSSRequestSigner implements RequestSigner {
         }
     }
 
-    private Map<String, String> getCommonreq(String accesskey) {
+    private Map<String, String> getCommonreq(String accesskey,Map<String,String> map) {
         Map<String, String> req = new HashMap<>();
         Long timestamp = System.currentTimeMillis() + MFSSConstants.EXPIRETIME;
         req.put("accesskey", accesskey);
-        req.put("timestamp", timestamp.toString());
+        if (map.get("timestamp") == null) {
+            req.put("timestamp", timestamp.toString());
+        }
         return req;
     }
 
