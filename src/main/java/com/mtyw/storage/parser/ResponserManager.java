@@ -26,6 +26,12 @@ public final class ResponserManager {
                 if (str != null && !"".equals(str)) {
                     ResultResponse resultResponse =  JSONObject.parseObject(str, ResultResponse.class);
                     if (resultResponse.isSuccess()) {
+                        if (resultResponse.getData() instanceof String) {
+                            return resultResponse;
+                        }
+                        if (resultResponse.getData() instanceof Boolean) {
+                            return resultResponse;
+                        }
                         T ob = JSONObject.parseObject(resultResponse.getData().toString(), tClass);
                         resultResponse.setData(ob);
                     }

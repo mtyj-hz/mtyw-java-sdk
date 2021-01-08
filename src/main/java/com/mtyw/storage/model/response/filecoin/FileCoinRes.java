@@ -2,13 +2,37 @@ package com.mtyw.storage.model.response.filecoin;
 
 
 public class FileCoinRes {
+    /**
+     * 文件名
+     */
     private String fileName;
+    /**
+     * 文件大小
+     */
     private Long fileSize;
+    /**
+     * cid信息
+     */
     private String cid;
+    /**
+     * 节点id
+     */
     private String nodeid;
+    /**
+     * 创建时间
+     */
     private Long timestamp;
+    /**
+     * 可用天数
+     */
     private Long useableDay;
+    /**
+     * 0正在上传，1可下载，2上传失败，3上传超时,4 做单进行中，5待检索,6检索中,7检索失败
+     */
     private Integer status;
+    /**
+     * 上传id信息
+     */
     private Integer id;
 
     public String getFileName() {

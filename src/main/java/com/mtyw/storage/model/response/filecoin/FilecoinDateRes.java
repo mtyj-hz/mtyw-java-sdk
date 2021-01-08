@@ -22,7 +22,9 @@ public class FilecoinDateRes {
      * 折扣
      */
     private BigDecimal discount;
-
+    /**
+     *
+     */
     private String tag;
     /**
      * 备注

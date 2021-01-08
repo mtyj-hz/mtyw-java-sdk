@@ -27,7 +27,7 @@ public class UploadIpfsFileReq {
      */
     private String regionId;
     /**
-     * 断点续传上传请求id，由上传服务器回调返回，第一次上传可不传，传了代表断点续传
+     * 断点续传上传请求id，由上传时服务器回调返回{@link com.mtyw.storage.common.CallBack},当需要续传时带上id，第一次上传可不传，传了才代表是断点续传
      */
     @Null
     private Long uploadRequestId;

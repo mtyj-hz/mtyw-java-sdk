@@ -1,7 +1,7 @@
 package com.mtyw.storage.common;
 
 
-import com.mtyw.storage.model.request.ipfs.UploadIpfsCallbackReq;
+import com.mtyw.storage.model.request.ipfs.UploadCallbackReq;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -20,12 +20,12 @@ public class CallBack {
     /**
      * 方法的传参
      */
-    UploadIpfsCallbackReq args;
+    UploadCallbackReq args;
     public CallBack(Object o, Method method) {
         ownobj = o;
         execute = method;
     }
-    public Object invoke(UploadIpfsCallbackReq args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public Object invoke(UploadCallbackReq args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         if (args == null || ownobj == null || execute == null) {
             return null;
         }
@@ -48,11 +48,11 @@ public class CallBack {
         this.execute = execute;
     }
 
-    public UploadIpfsCallbackReq getArgs() {
+    public UploadCallbackReq getArgs() {
         return args;
     }
 
-    public void setArgs(UploadIpfsCallbackReq args) {
+    public void setArgs(UploadCallbackReq args) {
         this.args = args;
     }
 }

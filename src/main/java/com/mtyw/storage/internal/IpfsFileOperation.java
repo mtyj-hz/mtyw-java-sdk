@@ -28,51 +28,52 @@ public class IpfsFileOperation extends FileCommonOperation {
     public IpfsFileOperation(ServiceClient client, String accessKey, String accessSecret) {
         super(client, accessKey, accessSecret);
     }
+
     public ResultResponse<String> uploadIpfsFile(UploadIpfsFileReq uploadIpfsFileReq, CallBack callBackReceiveRequestid, CallBack callBackFinish) throws MtywApiException {
-        Request request = new MFSSRequestBuilder<>(uploadIpfsFileReq,false).build();
+        Request request = new MFSSRequestBuilder<>(uploadIpfsFileReq, false).build();
         request.setResourcePath(ResourePathConstant.UPLOAD_IPFS_SIGN_RESOURCE);
         ResultResponse<UploadIpfsSignInfoDTO> uploadIpfsSignDTO = commonParserExcute(request, UploadIpfsSignInfoDTO.class);
         if (uploadIpfsSignDTO.isSuccess()) {
             if (callBackReceiveRequestid != null) {
-                try{
+                try {
                     callBackReceiveRequestid.invoke(callBackReceiveRequestid.getArgs());
-                }catch (Exception e) {
+                } catch (Exception e) {
                     logException("Unable to invoke callBackReceiveRequestid error: ", e.getMessage());
                 }
             }
-            UploadIpfsAddReq uploadFilecoinReq = new UploadIpfsAddReq();
-            uploadFilecoinReq.setExpire(uploadIpfsSignDTO.getData().getExpiretime());
-            uploadFilecoinReq.setFilepath(uploadIpfsSignDTO.getData().getFilepath());
-            uploadFilecoinReq.setSign(uploadIpfsSignDTO.getData().getSign());
-            uploadFilecoinReq.setTimestamp(uploadIpfsSignDTO.getData().getTimestamp());
-            uploadFilecoinReq.setFilesize(uploadIpfsSignDTO.getData().getFilesize());
-            uploadFilecoinReq.setNodeip(uploadIpfsSignDTO.getData().getNodeIp());
-            uploadFilecoinReq.setRegions(uploadIpfsSignDTO.getData().getRegionid());
-            uploadFilecoinReq.setUploadid(uploadIpfsSignDTO.getData().getUploadid());
-            uploadFilecoinReq.setUserid(uploadIpfsSignDTO.getData().getUserid());
-            Request uploadFilecoinSignReq = new MFSSRequestBuilder<>(uploadFilecoinReq,false).build();
-            uploadFilecoinSignReq.setResourcePath(ResourePathConstant.UPLOAD_IPFS_ADD_RESOURCE);
-            uploadFilecoinSignReq.addHeader(HttpHeaders.CONTENT_TYPE, DEFAULT_MULTIPART_CONTENT_TYPE);
-            if (uploadIpfsFileReq.getUploadRequestId()!= null && uploadIpfsFileReq.getUploadRequestId() > 0) {
+            UploadIpfsAddReq uploadIpfsAddReq = new UploadIpfsAddReq();
+            uploadIpfsAddReq.setExpire(uploadIpfsSignDTO.getData().getExpiretime());
+            uploadIpfsAddReq.setFilepath(uploadIpfsSignDTO.getData().getFilepath());
+            uploadIpfsAddReq.setSign(uploadIpfsSignDTO.getData().getSign());
+            uploadIpfsAddReq.setTimestamp(uploadIpfsSignDTO.getData().getTimestamp());
+            uploadIpfsAddReq.setFilesize(uploadIpfsSignDTO.getData().getFilesize());
+            uploadIpfsAddReq.setNodeip(uploadIpfsSignDTO.getData().getNodeIp());
+            uploadIpfsAddReq.setRegions(uploadIpfsSignDTO.getData().getRegionid());
+            uploadIpfsAddReq.setUploadid(uploadIpfsSignDTO.getData().getUploadid());
+            uploadIpfsAddReq.setUserid(uploadIpfsSignDTO.getData().getUserid());
+            Request uploadIpfsSignReq = new MFSSRequestBuilder<>(uploadIpfsAddReq, false).build();
+            uploadIpfsSignReq.setResourcePath(ResourePathConstant.UPLOAD_IPFS_ADD_RESOURCE);
+            //uploadIpfsSignReq.addHeader(HttpHeaders.CONTENT_TYPE, DEFAULT_MULTIPART_CONTENT_TYPE);
+            if (uploadIpfsFileReq.getUploadRequestId() != null && uploadIpfsFileReq.getUploadRequestId() > 0) {
                 UploadIpfsCheckpointReq uploadIpfsCheckpointReq = new UploadIpfsCheckpointReq();
                 uploadIpfsCheckpointReq.setFilepath(uploadIpfsFileReq.getFilepath());
                 uploadIpfsCheckpointReq.setUploadid(uploadIpfsFileReq.getUploadRequestId().intValue());
                 Long checkpoint = getCheckpoint(uploadIpfsCheckpointReq);
-                uploadFilecoinSignReq.addHeader(HttpHeaders.RANGE, String.format(RANGE_HEADER, checkpoint));
-            }else {
-                uploadFilecoinSignReq.addHeader(HttpHeaders.RANGE, String.format(RANGE_HEADER, 0));
+                uploadIpfsSignReq.addHeader(HttpHeaders.RANGE, String.format(RANGE_HEADER, checkpoint));
+            } else {
+                uploadIpfsSignReq.addHeader(HttpHeaders.RANGE, String.format(RANGE_HEADER, 0));
 
             }
-            uploadFilecoinSignReq.addHeader(HttpHeaders.CONNECTION, HTTP_OBJECT_CONNECTION);
-            uploadFilecoinSignReq.setMethod(HttpMethod.POST);
-            uploadFilecoinSignReq.setContentLength(uploadIpfsFileReq.getFileSize());
-            uploadFilecoinSignReq.setContent(uploadIpfsFileReq.getInputStream());
-            uploadFilecoinSignReq.setUrl(uploadIpfsSignDTO.getData().getNodeAddr());
-            ResultResponse<String> resultResponse = commonParserExcute(uploadFilecoinSignReq, String.class);
+            uploadIpfsSignReq.addHeader(HttpHeaders.CONNECTION, HTTP_OBJECT_CONNECTION);
+            uploadIpfsSignReq.setMethod(HttpMethod.POST);
+            uploadIpfsSignReq.setContentLength(uploadIpfsFileReq.getFileSize());
+            uploadIpfsSignReq.setContent(uploadIpfsFileReq.getInputStream());
+            uploadIpfsSignReq.setUrl(uploadIpfsSignDTO.getData().getNodeAddr());
+            ResultResponse<String> resultResponse = commonParserExcute(uploadIpfsSignReq, String.class);
             if (callBackFinish != null) {
-                try{
+                try {
                     callBackFinish.invoke(callBackFinish.getArgs());
-                }catch (Exception e) {
+                } catch (Exception e) {
                     logException("Unable to invoke callBackFinish error: ", e.getMessage());
                 }
             }
@@ -82,7 +83,7 @@ public class IpfsFileOperation extends FileCommonOperation {
     }
 
     private Long getCheckpoint(UploadIpfsCheckpointReq uploadIpfsCheckpointReq) {
-        Request request = new MFSSRequestBuilder<>(uploadIpfsCheckpointReq,false).build();
+        Request request = new MFSSRequestBuilder<>(uploadIpfsCheckpointReq, false).build();
         request.setResourcePath(ResourePathConstant.UPLOAD_IPFS_CHECKPOINT_RESOURCE);
         ResultResponse<Long> checkpoint = commonParserExcute(request, Long.class);
         if (checkpoint.isSuccess()) {
@@ -90,6 +91,7 @@ public class IpfsFileOperation extends FileCommonOperation {
         }
         return 0l;
     }
+
     public ResultResponse<Boolean> createDir(CreateDirRequest createDirRequest) {
         Request request = new MFSSRequestBuilder<>(createDirRequest, false).build();
         request.setResourcePath(ResourePathConstant.CREATEDIR_RESOURCE);

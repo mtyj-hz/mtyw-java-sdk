@@ -1,17 +1,17 @@
 package com.mtyw.storage.model.request.ipfs;
 
 
-public class UploadIpfsCallbackReq {
+public class UploadCallbackReq {
     /**
-     * 上传id
+     * 上传id ,回调会返回 断点续传需要用到该id
      */
     private Integer uploadid;
     /**
-     * ipfs cid,可为空
+     *   cid, 非必须
      */
     private String cid;
     /**
-     * 文件路径
+     * 文件路径,id回调没有该信息
      */
     private String filepath;
     /**
@@ -19,7 +19,7 @@ public class UploadIpfsCallbackReq {
      */
     private Boolean success;
     /**
-     * 失败消息
+     * 失败消息, 非必须，成功就没有
      */
     private String msg;
 

@@ -5,9 +5,21 @@ import java.math.BigDecimal;
 
 
 public class RetrieveReq {
+    /**
+     * 文件cid信息
+     */
     private String cid;
+    /**
+     * 文件大小
+     */
     private Long size;
+    /**
+     * 上传uploadid
+     */
     private Integer uploadId;
+    /**
+     * 单价
+     */
     private BigDecimal unitPrice;
 
     public String getCid() {

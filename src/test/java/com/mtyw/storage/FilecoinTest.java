@@ -1,11 +1,12 @@
 package com.mtyw.storage;
 
 import com.mtyw.storage.model.request.filecoin.CalculatePriceReq;
+import com.mtyw.storage.model.request.filecoin.FilecoinInfoReq;
+import com.mtyw.storage.model.request.filecoin.RetrieveReq;
 import com.mtyw.storage.model.request.filecoin.UploadFileCoinFileReq;
 import com.mtyw.storage.model.request.ipfs.UploadIpfsFileReq;
 import com.mtyw.storage.model.response.ResultResponse;
-import com.mtyw.storage.model.response.filecoin.FileBalanceRes;
-import com.mtyw.storage.model.response.filecoin.FilecoinDateRes;
+import com.mtyw.storage.model.response.filecoin.*;
 import org.junit.Test;
 
 import java.io.FileInputStream;
@@ -48,40 +49,50 @@ public class FilecoinTest extends TestBase{
 
         }
         uploadIpfsFileRequest.setFileSize(length);
-
         uploadIpfsFileRequest.setInputStream(inputStream);
         uploadIpfsFileRequest.setDays(180);
         uploadIpfsFileRequest.setUnitPrice(BigDecimal.valueOf(0.0002275));
         uploadIpfsFileRequest.setMinPrice(BigDecimal.valueOf(1));
         uploadIpfsFileRequest.setNodeId("rere");
-
-
-        ResultResponse resultResponse = mfssClient.uploadFilecoinFile(uploadIpfsFileRequest,null);
+        ResultResponse resultResponse = mfssClient.uploadFilecoinFile(uploadIpfsFileRequest,null, null);
         int aa =1;
         return ;
     }
 
     @Test
-    public  void uploadIpfsfile() {
-        UploadIpfsFileReq uploadIpfsFileRequest = new UploadIpfsFileReq();
-        uploadIpfsFileRequest.setFileName("sdk文件.txt");
-        InputStream inputStream = null;
-        Long length = 0l;
-        try{
-            inputStream = new FileInputStream("/Users/chenxiaoli/Downloads/竞争力能力实力对比PPT模板.pptx");
-            length = Long.valueOf(inputStream.available());
-        }catch (Exception e) {
+    public  void calculateRetrievePrice() {
 
-        }
-        uploadIpfsFileRequest.setFileSize(length);
-
-        uploadIpfsFileRequest.setInputStream(inputStream);
-        uploadIpfsFileRequest.setFileName("竞争力能力实力对比PPT模板.pptx");
-        uploadIpfsFileRequest.setFilepath("/竞争力能力实力对比PPT模板.pptx");
-        uploadIpfsFileRequest.setRegionId("10087");
-
-        ResultResponse resultResponse = mfssClient.uploadIpfsFile(uploadIpfsFileRequest,null, null);
-        int aa =1;
+        ResultResponse<FileRetrieveBalanceRes> resultResponse = mfssClient.calculateRetrievePrice(10000l);
         return ;
     }
+
+    @Test
+    public  void getFilecoinNodelist() {
+        ResultResponse<List<NodeRes>> resultResponse = mfssClient.getFilecoinNodelist();
+        return ;
+    }
+    @Test
+    public  void getFilecoinDirectorylist() {
+        ResultResponse<List<FileCoinRes>> resultResponse = mfssClient.getFilecoinDirectorylist(1,100);
+        return ;
+    }
+    @Test
+    public  void retrieve() {
+        RetrieveReq retrieveReq = new RetrieveReq();
+        retrieveReq.setCid("bafk2bzacedsd24iake6d6uy2btivhubwvovaef7wcwwdkmnbwfvwg6hxl7nwe");
+        retrieveReq.setSize(3153l);
+        retrieveReq.setUnitPrice(BigDecimal.valueOf(1));
+        retrieveReq.setUploadId(1733);
+        ResultResponse<Boolean> resultResponse = mfssClient.retrieve(retrieveReq);
+        return ;
+    }
+    @Test
+    public  void fileInfo() {
+        FilecoinInfoReq filecoinInfoReq = new FilecoinInfoReq();
+        filecoinInfoReq.setUploadId(1733);
+        ResultResponse<FilecoinInfoRes> resultResponse = mfssClient.fileInfo(filecoinInfoReq);
+        return ;
+    }
+
+
 }

@@ -12,15 +12,15 @@ import java.util.*;
 public class ClientHttpRequestConfiguration {
 
     public static final int DEFAULT_CONNECTION_REQUEST_TIMEOUT = -1;
-    public static final int DEFAULT_CONNECTION_TIMEOUT = 50 * 1000;
-    public static final int DEFAULT_SOCKET_TIMEOUT = 50 * 1000;
+    public static final int DEFAULT_CONNECTION_TIMEOUT = 5000 * 1000;
+    public static final int DEFAULT_SOCKET_TIMEOUT = 5000 * 1000;
     public static final int DEFAULT_MAX_CONNECTIONS = 1024;
     public static final long DEFAULT_CONNECTION_TTL = -1;
-    public static final long DEFAULT_IDLE_CONNECTION_TIME = 60 * 1000;
+    public static final long DEFAULT_IDLE_CONNECTION_TIME = 6000 * 1000;
     public static final int DEFAULT_VALIDATE_AFTER_INACTIVITY = 2 * 1000;
     public static final int DEFAULT_THREAD_POOL_WAIT_TIME = 60 * 1000;
-    public static final int DEFAULT_REQUEST_TIMEOUT = 5 * 60 * 1000;
-    public static final long DEFAULT_SLOW_REQUESTS_THRESHOLD = 5 * 60 * 1000;
+    public static final int DEFAULT_REQUEST_TIMEOUT = 5 * 6000 * 1000;
+    public static final long DEFAULT_SLOW_REQUESTS_THRESHOLD = 5 * 6000 * 1000;
     public static final boolean DEFAULT_USE_REAPER = true;
 
 

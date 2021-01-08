@@ -1,7 +1,13 @@
 package com.mtyw.storage.model.response.filecoin;
 
 public class NodeRes {
+    /**
+     * 节点id
+     */
     private String nodeId;
+    /**
+     * 节点地址
+     */
     private String nodeAddr;
 
     public String getNodeId() {

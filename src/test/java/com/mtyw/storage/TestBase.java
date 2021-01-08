@@ -47,7 +47,7 @@ public class TestBase {
     }
     @Test
     public  void createBucket() {
-        ResultResponse resultResponse = mfssClient.createdir("/","sdktest1");
+        ResultResponse resultResponse = mfssClient.createIpfsdir("/","sdktest1");
         int aa =1;
         return ;
     }

@@ -5,8 +5,17 @@ import java.math.BigDecimal;
 
 
 public class FileRetrieveBalanceRes {
+    /**
+     * 是否可用
+     */
     private Boolean useable;
+    /**
+     * 检索价格
+     */
     private BigDecimal price;
+    /**
+     * 检索单价
+     */
     private BigDecimal unitPrice;
 
     public Boolean getUseable() {

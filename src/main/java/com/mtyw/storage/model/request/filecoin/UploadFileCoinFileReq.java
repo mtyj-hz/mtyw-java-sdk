@@ -23,8 +23,13 @@ public class UploadFileCoinFileReq {
      * 天数信息
      */
     private Integer days;
-
+    /**
+     * 单价 从返回这个结果的接口{calculatePrice}去取{@link com.mtyw.storage.model.response.filecoin.FileBalanceRes}
+     */
     private BigDecimal unitPrice;
+    /**
+     * 最小价格 从返回这个结果的接口{calculatePrice}去取{@link com.mtyw.storage.model.response.filecoin.FileBalanceRes}
+     */
     private BigDecimal minPrice;
 
     public InputStream getInputStream() {

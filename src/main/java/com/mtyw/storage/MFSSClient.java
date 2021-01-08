@@ -8,6 +8,7 @@ import com.mtyw.storage.exception.MtywApiException;
 import com.mtyw.storage.internal.FileCoinOperation;
 import com.mtyw.storage.internal.IpfsFileOperation;
 import com.mtyw.storage.model.request.filecoin.CalculatePriceReq;
+import com.mtyw.storage.model.request.filecoin.FilecoinInfoReq;
 import com.mtyw.storage.model.request.filecoin.RetrieveReq;
 import com.mtyw.storage.model.request.filecoin.UploadFileCoinFileReq;
 import com.mtyw.storage.model.request.ipfs.CreateDirRequest;
@@ -22,10 +23,6 @@ import java.util.List;
 
 import static com.mtyw.storage.util.LogUtils.logException;
 
-/**
- * @Author: xiaoli
- * @Date: 2020/12/29 10:46 上午
- */
 public class MFSSClient implements MFSS {
     /* The default service client */
     private ServiceClient serviceClient;
@@ -74,7 +71,7 @@ public class MFSSClient implements MFSS {
     }
 
     @Override
-    public ResultResponse createdir(String parentpath, String dirname) {
+    public ResultResponse createIpfsdir(String parentpath, String dirname) {
         CreateDirRequest createDirRequest = new CreateDirRequest();
         createDirRequest.setDirectoryName(parentpath);
         createDirRequest.setParentpath(dirname);
@@ -84,8 +81,8 @@ public class MFSSClient implements MFSS {
 
 
     @Override
-    public ResultResponse<String>  uploadFilecoinFile(UploadFileCoinFileReq uploadIpfsFileRequest, CallBack callBack) throws MtywApiException {
-        ResultResponse<String>  response  = fileCoinOperation.uploadFilecoinFile(uploadIpfsFileRequest, new CallBack(null,null));
+    public ResultResponse<String> uploadFilecoinFile(UploadFileCoinFileReq uploadIpfsFileRequest, CallBack callBackReceiveRequestid, CallBack callBackFinish) throws MtywApiException {
+        ResultResponse<String> response = fileCoinOperation.uploadFilecoinFile(uploadIpfsFileRequest, callBackReceiveRequestid, callBackFinish);
         return response;
     }
 
@@ -107,19 +104,21 @@ public class MFSSClient implements MFSS {
     }
 
     @Override
-    public ResultResponse<List<NodeRes>> getFilecoinNodelist(){
+    public ResultResponse<List<NodeRes>> getFilecoinNodelist() {
         return fileCoinOperation.getFilecoinNodelist();
     }
 
     @Override
-    public ResultResponse<List<FileCoinRes>> getFilecoinDirectorylist(Integer page, Integer limit){
-        return fileCoinOperation.getFilecoinDirectorylist( page, limit);
+    public ResultResponse<List<FileCoinRes>> getFilecoinDirectorylist(Integer page, Integer limit) {
+        return fileCoinOperation.getFilecoinDirectorylist(page, limit);
     }
+
     @Override
-    public ResultResponse<String> uploadIpfsFile(UploadIpfsFileReq uploadIpfsFileReq, CallBack callBackReceiveRequestid, CallBack callBackFinish){
+    public ResultResponse<String> uploadIpfsFile(UploadIpfsFileReq uploadIpfsFileReq, CallBack callBackReceiveRequestid, CallBack callBackFinish) {
         ResultResponse<String> ipfsFile = ipfsFileOperation.uploadIpfsFile(uploadIpfsFileReq, callBackReceiveRequestid, callBackFinish);
         return ipfsFile;
     }
+
     @Override
     public ResultResponse<FileRetrieveBalanceRes> calculateRetrievePrice(Long size) {
         ResultResponse<FileRetrieveBalanceRes> resResultResponse = fileCoinOperation.calculateRetrievePrice(size);
@@ -127,8 +126,14 @@ public class MFSSClient implements MFSS {
     }
 
     @Override
-    public ResultResponse<Boolean> retrieve(RetrieveReq retrieveReq) throws MtywApiException{
-        ResultResponse<Boolean> resResultResponse = fileCoinOperation.retrieve( retrieveReq);
+    public ResultResponse<Boolean> retrieve(RetrieveReq retrieveReq) throws MtywApiException {
+        ResultResponse<Boolean> resResultResponse = fileCoinOperation.retrieve(retrieveReq);
+        return resResultResponse;
+    }
+
+    @Override
+    public ResultResponse<FilecoinInfoRes> fileInfo(FilecoinInfoReq filecoinInfoReq) throws MtywApiException {
+        ResultResponse<FilecoinInfoRes> resResultResponse = fileCoinOperation.fileInfo(filecoinInfoReq);
         return resResultResponse;
     }
 

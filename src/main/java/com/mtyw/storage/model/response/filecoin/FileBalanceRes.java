@@ -5,9 +5,21 @@ import java.math.BigDecimal;
 
 
 public class FileBalanceRes {
+    /**
+     * 是否可用, 不可用需要充值
+     */
     private Boolean useable;
+    /**
+     * 计算出来的价格
+     */
     private BigDecimal price;
+    /**
+     * 单价
+     */
     private BigDecimal unitPrice;
+    /**
+     * 最小价
+     */
     private BigDecimal minPrice;
 
     public Boolean getUseable() {
