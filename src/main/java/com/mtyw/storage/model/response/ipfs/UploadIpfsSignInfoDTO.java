@@ -1,6 +1,6 @@
 package com.mtyw.storage.model.response.ipfs;
 
-public class UploadIpfsSignDTO {
+public class UploadIpfsSignInfoDTO {
 
     private String sign;
     private Long timestamp;

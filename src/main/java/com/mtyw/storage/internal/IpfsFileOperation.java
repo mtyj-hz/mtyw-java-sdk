@@ -3,7 +3,6 @@ package com.mtyw.storage.internal;
 
 import com.mtyw.storage.HttpMethod;
 import com.mtyw.storage.common.*;
-import com.mtyw.storage.constant.MFSSConstants;
 import com.mtyw.storage.constant.ResourePathConstant;
 import com.mtyw.storage.exception.MtywApiException;
 import com.mtyw.storage.model.request.ipfs.*;
@@ -32,7 +31,7 @@ public class IpfsFileOperation extends FileCommonOperation {
     public ResultResponse<String> uploadIpfsFile(UploadIpfsFileReq uploadIpfsFileReq, CallBack callBackReceiveRequestid, CallBack callBackFinish) throws MtywApiException {
         Request request = new MFSSRequestBuilder<>(uploadIpfsFileReq,false).build();
         request.setResourcePath(ResourePathConstant.UPLOAD_IPFS_SIGN_RESOURCE);
-        ResultResponse<UploadIpfsSignDTO> uploadIpfsSignDTO = commonParserExcute(request, UploadIpfsSignDTO.class);
+        ResultResponse<UploadIpfsSignInfoDTO> uploadIpfsSignDTO = commonParserExcute(request, UploadIpfsSignInfoDTO.class);
         if (uploadIpfsSignDTO.isSuccess()) {
             if (callBackReceiveRequestid != null) {
                 try{
