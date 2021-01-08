@@ -1,12 +1,6 @@
 package com.mtyw.storage.model.response.ipfs;
 
-import com.mtyw.storage.model.response.ResultResponse;
-
-/**
- * @Author: xiaoli
- * @Date: 2020/12/31 5:18 下午
- */
-public class UploadipfsSignDTO extends ResultResponse<UploadipfsSignDTO> {
+public class UploadIpfsSignDTO {
 
     private String sign;
     private Long timestamp;
