@@ -4,7 +4,7 @@
 - Maven示例工程：mtyw-java-sdk.zip
 
 ## 安装
-#### 1.在Maven项目中加入依赖项（推荐方式）目前没有：
+#### 1.在Maven项目中加入依赖项（推荐方式）,目前没有：
 
 在Maven工程中使用MFSS Java SDK，只需在pom.xml中加入相应依赖即可。以1.0.0版本为例，在<dependencies>中加入如下内容：
 
@@ -21,7 +21,7 @@
 - 下载并解压Java SDK 开发包。
 - 将解压后文件夹中的文件mtyw-java-sdk.jar以及lib文件夹下的所有JAR文件拷贝到您的项目中。
 - 在Intellij IDEA中选择您的工程，选择引用的module，右键选择File > Project Structure > Modules > Dependencies > + > JARs or directories 。
-- 选中拷贝的所有JAR文件，导入到External Libraries中。
+- 选中 mtyw-java-sdk-1.0.0-SNAPSHOT.jar文件，导入到External Libraries中。
 
 
 
