@@ -37,23 +37,23 @@ public class FilecoinTest extends TestBase{
     }
 
     @Test
-    public  void uploadfile() {
+    public  void uploadFilecoinfile() {
         UploadFileCoinFileReq uploadIpfsFileRequest = new UploadFileCoinFileReq();
-        uploadIpfsFileRequest.setFileName("sdk文件.txt");
+        uploadIpfsFileRequest.setFileName("qyn.mp4");
         InputStream inputStream = null;
         Long length = 0l;
         try{
-            inputStream = new FileInputStream("/Users/chenxiaoli/jihuo.txt");
+            inputStream = new FileInputStream("/Users/chenxiaoli/qyn.mp4");
             length = Long.valueOf(inputStream.available());
         }catch (Exception e) {
 
         }
         uploadIpfsFileRequest.setFileSize(length);
-        uploadIpfsFileRequest.setInputStream(inputStream);
         uploadIpfsFileRequest.setDays(180);
-        uploadIpfsFileRequest.setUnitPrice(BigDecimal.valueOf(0.0002275));
-        uploadIpfsFileRequest.setMinPrice(BigDecimal.valueOf(1));
-        uploadIpfsFileRequest.setNodeId("rere");
+        uploadIpfsFileRequest.setNodeId("aa");
+        uploadIpfsFileRequest.setUploadRequestId(1754l);
+        //uploadIpfsFileRequest.setUploadRequestId(1738l);
+        uploadIpfsFileRequest.setInputStream(inputStream);
         ResultResponse resultResponse = mfssClient.uploadFilecoinFile(uploadIpfsFileRequest,null, null);
         int aa =1;
         return ;

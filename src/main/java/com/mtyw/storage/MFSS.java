@@ -61,67 +61,6 @@ public interface MFSS {
     ResultResponse<String> uploadIpfsFile(UploadIpfsFileReq uploadIpfsFileReq, CallBack callBackReceiveRequestid, CallBack callBackFinish) throws MtywApiException;;
 
     /**
-     * 上传文件到filecoin
-     * @param uploadIpfsFileRequest 文件信息
-     * @param callBackReceiveRequestid 接收上传uploadid信息回调， 中途上传上传断开，断点续传需要用到接口返回的uploadid，可以先存储到数据库中
-     * @param callBackFinish 上传完成后回调上传状态
-     * @return
-     * @throws MtywApiException
-     */
-    ResultResponse uploadFilecoinFile(UploadFileCoinFileReq uploadIpfsFileRequest, CallBack callBackReceiveRequestid, CallBack callBackFinish) throws MtywApiException;
-
-    /**
-     * filecoin冷备购买天数接口
-     * @return
-     */
-    ResultResponse<List<FilecoinDateRes>> filecoinDatelist() throws MtywApiException;;
-
-    /**
-     * 冷备计算价格
-     * @param calculatePriceReq 计算价格参数信息
-     * @return
-     */
-    ResultResponse<FileBalanceRes> calculatePrice(CalculatePriceReq calculatePriceReq) throws MtywApiException;;
-
-    /**
-     * 计算检索价格
-     * @param size 文件大小，需与实际一致，否则检索会验证错误
-     * @return
-     */
-    ResultResponse<FileRetrieveBalanceRes> calculateRetrievePrice(Long size) throws MtywApiException;;
-
-    /**
-     * 获取节点列表
-     * @return 可用节点信息
-     */
-    ResultResponse<List<NodeRes>> getFilecoinNodelist() throws MtywApiException;;
-
-    /**
-     * 获取filiecoin文件列表
-     * @param page 页数信息
-     * @param limit 每页个数
-     * @return
-     */
-    ResultResponse<List<FileCoinRes>> getFilecoinDirectorylist(Integer page, Integer limit) throws MtywApiException;;
-
-    /**
-     * 检索
-     * @param retrieveReq 检索参数
-     * @return 是否成功
-     * @throws MtywApiException
-     */
-    ResultResponse<Boolean> retrieve(RetrieveReq retrieveReq) throws MtywApiException;
-
-    /**
-     * 轮询获取文件信息
-     * @param filecoinInfoReq 文件信息
-     * @return
-     * @throws MtywApiException
-     */
-    ResultResponse<FilecoinInfoRes> fileInfo(FilecoinInfoReq filecoinInfoReq) throws MtywApiException;
-
-
-    /**
      * 下载ipfs文件
      * @param filePath  文件路径
      * @param saveDir   存储目录
@@ -208,6 +147,65 @@ public interface MFSS {
      */
     ResultResponse<Boolean> renameDirectory(String fromDirectoryPath, String toDirectoryPath);
 
+    /**
+     * 上传文件到filecoin
+     * @param uploadIpfsFileRequest 文件信息
+     * @param callBackReceiveRequestid 接收上传uploadid信息回调， 中途上传上传断开，断点续传需要用到接口返回的uploadid，可以先存储到数据库中
+     * @param callBackFinish 上传完成后回调上传状态
+     * @return
+     * @throws MtywApiException
+     */
+    ResultResponse uploadFilecoinFile(UploadFileCoinFileReq uploadIpfsFileRequest, CallBack callBackReceiveRequestid, CallBack callBackFinish) throws MtywApiException;
+
+    /**
+     * filecoin冷备购买天数接口
+     * @return
+     */
+    ResultResponse<List<FilecoinDateRes>> filecoinDatelist() throws MtywApiException;;
+
+    /**
+     * 冷备计算价格
+     * @param calculatePriceReq 计算价格参数信息
+     * @return
+     */
+    ResultResponse<FileBalanceRes> calculatePrice(CalculatePriceReq calculatePriceReq) throws MtywApiException;;
+
+    /**
+     * 计算检索价格
+     * @param size 文件大小，需与实际一致，否则检索会验证错误
+     * @return
+     */
+    ResultResponse<FileRetrieveBalanceRes> calculateRetrievePrice(Long size) throws MtywApiException;;
+
+    /**
+     * 获取节点列表
+     * @return 可用节点信息
+     */
+    ResultResponse<List<NodeRes>> getFilecoinNodelist() throws MtywApiException;;
+
+    /**
+     * 获取filiecoin文件列表
+     * @param page 页数信息
+     * @param limit 每页个数
+     * @return
+     */
+    ResultResponse<List<FileCoinRes>> getFilecoinDirectorylist(Integer page, Integer limit) throws MtywApiException;;
+
+    /**
+     * 检索
+     * @param retrieveReq 检索参数
+     * @return 是否成功
+     * @throws MtywApiException
+     */
+    ResultResponse<Boolean> retrieve(RetrieveReq retrieveReq) throws MtywApiException;
+
+    /**
+     * filecoin轮询获取文件信息
+     * @param filecoinInfoReq 文件信息
+     * @return
+     * @throws MtywApiException
+     */
+    ResultResponse<FilecoinInfoRes> fileInfo(FilecoinInfoReq filecoinInfoReq) throws MtywApiException;
 
 
 }

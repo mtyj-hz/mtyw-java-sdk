@@ -1,8 +1,11 @@
 package com.mtyw.storage.model.request.filecoin;
 
 
+import com.mtyw.storage.annotation.Null;
+import com.mtyw.storage.model.response.filecoin.FilecoinDateRes;
+import com.mtyw.storage.model.response.filecoin.NodeRes;
+
 import java.io.InputStream;
-import java.math.BigDecimal;
 
 public class UploadFileCoinFileReq {
     /**
@@ -13,24 +16,24 @@ public class UploadFileCoinFileReq {
      * 文件名
      */
     private String fileName;
-
+    /**
+     *  filecoin节点id，由获取上传节点返回{@link NodeRes},MFSS.getFilecoinNodelist 接口返回,
+     */
     private String nodeId;
     /**
      * 文件大小，单位b
      */
     private Long fileSize;
     /**
-     * 天数信息
+     * 天数信息 返回{@link FilecoinDateRes} MFSS.filecoinDatelist 接口返回,
      */
     private Integer days;
+
     /**
-     * 单价 从返回这个结果的接口{calculatePrice}去取{@link com.mtyw.storage.model.response.filecoin.FileBalanceRes}
+     * 断点续传上传请求id，由上传时服务器回调返回{@link com.mtyw.storage.common.CallBack},当需要续传时带上id，第一次上传可不传，传了才代表是断点续传
      */
-    private BigDecimal unitPrice;
-    /**
-     * 最小价格 从返回这个结果的接口{calculatePrice}去取{@link com.mtyw.storage.model.response.filecoin.FileBalanceRes}
-     */
-    private BigDecimal minPrice;
+    @Null
+    private Long uploadRequestId;
 
     public InputStream getInputStream() {
         return inputStream;
@@ -72,19 +75,11 @@ public class UploadFileCoinFileReq {
         this.days = days;
     }
 
-    public BigDecimal getUnitPrice() {
-        return unitPrice;
+    public Long getUploadRequestId() {
+        return uploadRequestId;
     }
 
-    public void setUnitPrice(BigDecimal unitPrice) {
-        this.unitPrice = unitPrice;
-    }
-
-    public BigDecimal getMinPrice() {
-        return minPrice;
-    }
-
-    public void setMinPrice(BigDecimal minPrice) {
-        this.minPrice = minPrice;
+    public void setUploadRequestId(Long uploadRequestId) {
+        this.uploadRequestId = uploadRequestId;
     }
 }

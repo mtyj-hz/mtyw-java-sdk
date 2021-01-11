@@ -1,25 +1,27 @@
-package com.mtyw.storage.model.request.ipfs;
+package com.mtyw.storage.model.request.filecoin;
 
 
-public class UploadIpfsCheckpointReq {
+public class UploadFilecoinCheckpointReq {
 
     /**
      * 文件路径
      */
-    private String filepath;
+    private String filename;
     /**
      *  上传id
      */
     private Integer uploadid;
-
+    /**
+     *用户id
+     */
     private Integer userid;
 
-    public String getFilepath() {
-        return filepath;
+    public String getFilename() {
+        return filename;
     }
 
-    public void setFilepath(String filepath) {
-        this.filepath = filepath;
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     public Integer getUploadid() {

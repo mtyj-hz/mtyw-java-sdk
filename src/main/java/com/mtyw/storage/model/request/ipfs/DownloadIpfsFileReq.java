@@ -6,7 +6,7 @@ import com.mtyw.storage.model.response.ipfs.FileDownloadResponse;
  * @author lt
  * @Date 11:44 2021/1/6
  */
-public class DownloadIpfsFileRequest{
+public class DownloadIpfsFileReq {
 
     private Integer userid;
     private String nodeip;
@@ -63,7 +63,7 @@ public class DownloadIpfsFileRequest{
         this.cid = cid;
     }
 
-    public DownloadIpfsFileRequest(FileDownloadResponse r) {
+    public DownloadIpfsFileReq(FileDownloadResponse r) {
         this.sign = r.getSign();
         this.timestamp = r.getTimestamp();
         this.userid = r.getUid();

@@ -11,7 +11,7 @@ import com.mtyw.storage.model.request.filecoin.CalculatePriceReq;
 import com.mtyw.storage.model.request.filecoin.FilecoinInfoReq;
 import com.mtyw.storage.model.request.filecoin.RetrieveReq;
 import com.mtyw.storage.model.request.filecoin.UploadFileCoinFileReq;
-import com.mtyw.storage.model.request.ipfs.CreateDirRequest;
+import com.mtyw.storage.model.request.ipfs.CreateDirReq;
 import com.mtyw.storage.model.request.ipfs.UploadIpfsFileReq;
 import com.mtyw.storage.model.response.ResultResponse;
 import com.mtyw.storage.model.response.filecoin.*;
@@ -72,10 +72,10 @@ public class MFSSClient implements MFSS {
 
     @Override
     public ResultResponse createIpfsdir(String parentpath, String dirname) {
-        CreateDirRequest createDirRequest = new CreateDirRequest();
-        createDirRequest.setDirectoryName(parentpath);
-        createDirRequest.setParentpath(dirname);
-        ResultResponse response = ipfsFileOperation.createDir(createDirRequest);
+        CreateDirReq createDirReq = new CreateDirReq();
+        createDirReq.setDirectoryName(parentpath);
+        createDirReq.setParentpath(dirname);
+        ResultResponse response = ipfsFileOperation.createDir(createDirReq);
         return response;
     }
 

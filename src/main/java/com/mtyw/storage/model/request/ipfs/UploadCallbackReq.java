@@ -11,9 +11,13 @@ public class UploadCallbackReq {
      */
     private String cid;
     /**
-     * 文件路径,id回调没有该信息
+     * 文件路径,callBackReceiveRequestid回调没有该信息
      */
     private String filepath;
+    /**
+     * 文件名,callBackReceiveRequestid回调没有该信息
+     */
+    private String filename;
     /**
      * 是否成功
      */

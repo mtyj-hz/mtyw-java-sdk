@@ -19,7 +19,7 @@ public class UploadIpfsFileReq {
      */
     private Long fileSize;
     /**
-     * 文件路径
+     * 文件路径 /a.txt ，如果要在某个文件夹下创建文件，需要先调用创建文件夹接口，再在这个文件夹下创建文件
      */
     private String filepath;
     /**

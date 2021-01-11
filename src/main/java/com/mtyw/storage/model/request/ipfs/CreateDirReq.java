@@ -1,7 +1,7 @@
 package com.mtyw.storage.model.request.ipfs;
 
 
-public class CreateDirRequest {
+public class CreateDirReq {
     /**
      * 父级目录path
      */

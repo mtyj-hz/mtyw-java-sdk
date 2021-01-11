@@ -36,7 +36,10 @@ public class IpfsFileOperation extends FileCommonOperation {
         if (uploadIpfsSignDTO.isSuccess()) {
             if (callBackReceiveRequestid != null) {
                 try {
-                    callBackReceiveRequestid.invoke(callBackReceiveRequestid.getArgs());
+                    UploadCallbackReq uploadCallbackReq = new UploadCallbackReq();
+                    uploadCallbackReq.setUploadid(uploadIpfsSignDTO.getData().getUploadid());
+                    uploadCallbackReq.setSuccess(true);
+                    callBackFinish.invoke(uploadCallbackReq);
                 } catch (Exception e) {
                     logException("Unable to invoke callBackReceiveRequestid error: ", e.getMessage());
                 }
@@ -58,6 +61,7 @@ public class IpfsFileOperation extends FileCommonOperation {
                 UploadIpfsCheckpointReq uploadIpfsCheckpointReq = new UploadIpfsCheckpointReq();
                 uploadIpfsCheckpointReq.setFilepath(uploadIpfsFileReq.getFilepath());
                 uploadIpfsCheckpointReq.setUploadid(uploadIpfsFileReq.getUploadRequestId().intValue());
+                uploadIpfsCheckpointReq.setUserid(uploadIpfsSignDTO.getData().getUserid());
                 Long checkpoint = getCheckpoint(uploadIpfsCheckpointReq);
                 uploadIpfsSignReq.addHeader(HttpHeaders.RANGE, String.format(RANGE_HEADER, checkpoint));
             } else {
@@ -72,7 +76,14 @@ public class IpfsFileOperation extends FileCommonOperation {
             ResultResponse<String> resultResponse = commonParserExcute(uploadIpfsSignReq, String.class);
             if (callBackFinish != null) {
                 try {
-                    callBackFinish.invoke(callBackFinish.getArgs());
+                    UploadCallbackReq uploadCallbackReq = new UploadCallbackReq();
+                    uploadCallbackReq.setUploadid(uploadIpfsSignDTO.getData().getUploadid());
+                    uploadCallbackReq.setFilepath(uploadIpfsSignDTO.getData().getFilepath());
+                    uploadCallbackReq.setCid(resultResponse.getData());
+                    uploadCallbackReq.setSuccess(resultResponse.isSuccess());
+                    uploadCallbackReq.setMsg(resultResponse.getMsg());
+
+                    callBackFinish.invoke(uploadCallbackReq);
                 } catch (Exception e) {
                     logException("Unable to invoke callBackFinish error: ", e.getMessage());
                 }
@@ -92,8 +103,8 @@ public class IpfsFileOperation extends FileCommonOperation {
         return 0l;
     }
 
-    public ResultResponse<Boolean> createDir(CreateDirRequest createDirRequest) {
-        Request request = new MFSSRequestBuilder<>(createDirRequest, false).build();
+    public ResultResponse<Boolean> createDir(CreateDirReq createDirReq) {
+        Request request = new MFSSRequestBuilder<>(createDirReq, false).build();
         request.setResourcePath(ResourePathConstant.CREATEDIR_RESOURCE);
         request.setMethod(HttpMethod.POST);
         ResultResponse<Boolean> resultResponse = commonParserExcute(request, Boolean.class);
@@ -108,7 +119,7 @@ public class IpfsFileOperation extends FileCommonOperation {
             return ResultResponse.fail(response.getMsg());
         }
         FileDownloadResponse data = response.getData();
-        DownloadIpfsFileRequest download = new DownloadIpfsFileRequest(data);
+        DownloadIpfsFileReq download = new DownloadIpfsFileReq(data);
         Request dr = new MFSSRequestBuilder<>(download, false).build();
         dr.setResourcePath(ResourePathConstant.DOWNLOAD_IPFS);
         dr.setUrl(data.getNodeAddr());
