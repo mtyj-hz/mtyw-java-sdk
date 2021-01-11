@@ -24,15 +24,8 @@
 - 选中拷贝的所有JAR文件，导入到External Libraries中。
 
 
-#### 上传文件
 
-```java
-String accessKeyId = "<yourAccessKeyId>";
-String accessKeySecret = "<yourAccessKeySecret>";
-
-
-```
-## 引入jar包后初始化client,如计算价格
+#### 引入jar包后初始化client,如计算价格接口调用示例如下。
 ```java
 
     public static  void main(String[] args) {
@@ -44,6 +37,16 @@ String accessKeySecret = "<yourAccessKeySecret>";
     }
 
 ```
+
+#### 上传文件
+
+```java
+String accessKeyId = "<yourAccessKeyId>";
+String accessKeySecret = "<yourAccessKeySecret>";
+
+
+```
+
 
 ## 标准存储
 
