@@ -23,9 +23,27 @@
 - 在Intellij IDEA中选择您的工程，选择引用的module，右键选择File > Project Structure > Modules > Dependencies > + > JARs or directories 。
 - 选中拷贝的所有JAR文件，导入到External Libraries中。
 
-## 获取Access Key
-[点击这里](点击这里)获取和查看Access Key
 
+#### 上传文件
+
+```java
+String accessKeyId = "<yourAccessKeyId>";
+String accessKeySecret = "<yourAccessKeySecret>";
+
+
+```
+## 引入jar包后初始化client,如计算价格
+```java
+
+    public static  void main(String[] args) {
+        MFSSClient mfssClient = new MFSSClient("http://10.0.0.3:8040/api","1","2");
+        CalculatePriceReq calculatePriceReq = new CalculatePriceReq();
+        calculatePriceReq.setDays(180);
+        calculatePriceReq.setSizeList(Arrays.asList(1000l));
+        ResultResponse<FileBalanceRes> resResultResponse =  mfssClient.calculatePrice(calculatePriceReq);
+    }
+
+```
 
 ## 标准存储
 
