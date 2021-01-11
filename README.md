@@ -34,6 +34,7 @@
         calculatePriceReq.setDays(180);
         calculatePriceReq.setSizeList(Arrays.asList(1000l));
         ResultResponse<FileBalanceRes> resResultResponse =  mfssClient.calculatePrice(calculatePriceReq);
+        mfssClient.shutdown();
     }
 
 ```
