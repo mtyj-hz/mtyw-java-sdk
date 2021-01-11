@@ -25,7 +25,7 @@
 
 
 
-#### 引入jar包后初始化client,如计算价格接口调用示例如下。
+#### 引入jar包后初始化client,如计算价格接口调用示例如下:
 ```java
 
     public static  void main(String[] args) {
