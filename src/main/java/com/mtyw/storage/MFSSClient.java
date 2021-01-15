@@ -87,6 +87,11 @@ public class MFSSClient implements MFSS {
     }
 
     @Override
+    public ResultResponse<Void> downloadFileCoinFile(String cid, String uploadid, String saveDir) {
+        return fileCoinOperation.downloadFileCoinFile(cid, uploadid, saveDir);
+    }
+
+    @Override
     public ResultResponse<Void> downloadIpfsFile(String filePath, String saveDir) {
         return ipfsFileOperation.downloadIpfsFile(filePath, saveDir);
     }

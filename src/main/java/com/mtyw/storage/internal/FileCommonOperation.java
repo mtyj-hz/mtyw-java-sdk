@@ -9,6 +9,12 @@ import com.mtyw.storage.parser.ResponseParser;
 import com.mtyw.storage.parser.ResponserManager;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 import static com.mtyw.storage.parser.ResponserManager.commonresponseParser;
@@ -102,5 +108,16 @@ public abstract class FileCommonOperation {
 
     public void setAccesssecret(String accesssecret) {
         this.accesssecret = accesssecret;
+    }
+
+    /**
+     * zero copy
+     */
+    protected void downloadFile(String url, String saveDir, String fileName) throws IOException {
+        try (InputStream ins = new URL(url).openStream()) {
+            Path target = Paths.get(saveDir, fileName);
+            Files.createDirectories(target.getParent());
+            Files.copy(ins, target, StandardCopyOption.REPLACE_EXISTING);
+        }
     }
 }

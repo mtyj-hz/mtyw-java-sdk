@@ -158,6 +158,15 @@ public interface MFSS {
     ResultResponse uploadFilecoinFile(UploadFileCoinFileReq uploadIpfsFileRequest, CallBack callBackReceiveRequestid, CallBack callBackFinish) throws MtywApiException;
 
     /**
+     * 下载filCoin文件
+     * @param cid       文件cid
+     * @param uploadid  上传id
+     * @param saveDir   存储路径
+     * @return
+     */
+    ResultResponse<Void> downloadFileCoinFile(String cid, String uploadid, String saveDir);
+
+    /**
      * filecoin冷备购买天数接口
      * @return
      */

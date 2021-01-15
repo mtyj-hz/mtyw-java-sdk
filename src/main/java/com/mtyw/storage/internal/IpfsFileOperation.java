@@ -148,16 +148,6 @@ public class IpfsFileOperation extends FileCommonOperation {
     }
 
 
-    /**
-     * zero copy
-     */
-    private void downloadFile(String url, String saveDir, String fileName) throws IOException {
-        try (InputStream ins = new URL(url).openStream()) {
-            Path target = Paths.get(saveDir, fileName);
-            Files.createDirectories(target.getParent());
-            Files.copy(ins, target, StandardCopyOption.REPLACE_EXISTING);
-        }
-    }
 
     public ResultResponse<List<RegionRes>> getAllRegionList() {
         Request request = new MFSSRequestBuilder<>().build();

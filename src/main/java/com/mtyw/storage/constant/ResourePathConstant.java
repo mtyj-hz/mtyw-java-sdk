@@ -16,6 +16,8 @@ public class ResourePathConstant {
     public final static String FILECOIN_RETRIEVE_CALCULATE_PRICE_RESOURCE = "/filecoinsdk/calculateRetrievePrice";
     public final static String FILECOIN_RETRIEVE_RESOURCE = "/filecoinsdk/retrieve";
     public final static String FILECOIN_FILEINFO_RESOURCE = "/filecoinsdk/fileInfo";
+    public final static String FILECOIN_DOWNLOAD_SIGN = "/filecoinsdk/filecoinDownloadSign";
+    public final static String FILECOIN_DOWNLOAD = "/fileCoin/download";
 
 
 

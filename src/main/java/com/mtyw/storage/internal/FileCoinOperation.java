@@ -10,15 +10,14 @@ import com.mtyw.storage.constant.ResourePathConstant;
 import com.mtyw.storage.exception.MtywApiException;
 import com.mtyw.storage.model.request.filecoin.*;
 import com.mtyw.storage.model.request.ipfs.UploadCallbackReq;
-import com.mtyw.storage.model.request.ipfs.UploadIpfsAddReq;
-import com.mtyw.storage.model.request.ipfs.UploadIpfsCheckpointReq;
-import com.mtyw.storage.model.request.ipfs.UploadIpfsFileReq;
 import com.mtyw.storage.model.response.ResultResponse;
 import com.mtyw.storage.model.response.filecoin.*;
-import com.mtyw.storage.model.response.ipfs.UploadIpfsSignInfoDTO;
 import com.mtyw.storage.util.HttpHeaders;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.mtyw.storage.constant.MFSSConstants.*;
 import static com.mtyw.storage.util.LogUtils.logException;
@@ -159,5 +158,29 @@ public class FileCoinOperation extends FileCommonOperation {
         request.setResourcePath(ResourePathConstant.FILECOIN_DIRECTORY_LIST_RESOURCE);
         ResultResponse<List<FileCoinRes>> resultResponse = commonParserExcutelist(request, FileCoinRes.class);
         return resultResponse;
+    }
+
+    public ResultResponse<Void> downloadFileCoinFile(String cid, String uploadid, String saveDir) {
+        Map<String, String> param = new HashMap<>();
+        param.put("cid", cid);
+        param.put("uploadid", uploadid);
+        Request request = new MFSSRequestBuilder<>(param).build();
+        request.setResourcePath(ResourePathConstant.FILECOIN_DOWNLOAD_SIGN);
+        ResultResponse<FilecoindownloadRes> response = commonParserExcute(request, FilecoindownloadRes.class);
+        if (!response.isSuccess()) {
+            return ResultResponse.fail(response.getMsg());
+        }
+        FilecoindownloadRes data = response.getData();
+        DownloadFileCoinFileReq download = new DownloadFileCoinFileReq(data);
+        Request dr = new MFSSRequestBuilder<>(download, false).build();
+        dr.setResourcePath(ResourePathConstant.FILECOIN_DOWNLOAD);
+        dr.setUrl(data.getNodeAddr());
+        ServiceClient.Request httpRequest = buildRequest(dr);
+        try {
+            downloadFile(httpRequest.getUri(), saveDir, data.getFileName());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResultResponse.suc();
     }
 }
