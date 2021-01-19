@@ -9,6 +9,7 @@ import com.mtyw.storage.model.request.ipfs.*;
 import com.mtyw.storage.model.response.ResultResponse;
 import com.mtyw.storage.model.response.ipfs.*;
 import com.mtyw.storage.util.HttpHeaders;
+import org.omg.PortableInterceptor.INACTIVE;
 
 import java.io.*;
 import java.net.URL;
@@ -56,6 +57,7 @@ public class IpfsFileOperation extends FileCommonOperation {
             uploadIpfsAddReq.setUserid(uploadIpfsSignDTO.getData().getUserid());
             Request uploadIpfsSignReq = new MFSSRequestBuilder<>(uploadIpfsAddReq, false).build();
             uploadIpfsSignReq.setResourcePath(ResourePathConstant.UPLOAD_IPFS_ADD_RESOURCE);
+            uploadIpfsSignReq.setContent(uploadIpfsFileReq.getInputStream());
             //uploadIpfsSignReq.addHeader(HttpHeaders.CONTENT_TYPE, DEFAULT_MULTIPART_CONTENT_TYPE);
             if (uploadIpfsFileReq.getUploadRequestId() != null && uploadIpfsFileReq.getUploadRequestId() > 0) {
                 UploadIpfsCheckpointReq uploadIpfsCheckpointReq = new UploadIpfsCheckpointReq();
@@ -63,6 +65,20 @@ public class IpfsFileOperation extends FileCommonOperation {
                 uploadIpfsCheckpointReq.setUploadid(uploadIpfsFileReq.getUploadRequestId().intValue());
                 uploadIpfsCheckpointReq.setUserid(uploadIpfsSignDTO.getData().getUserid());
                 Long checkpoint = getCheckpoint(uploadIpfsCheckpointReq);
+                try {
+                    int i;
+                    while((i = uploadIpfsFileReq.getInputStream().read())!=-1)
+                    {
+                        if (i>= checkpoint) {
+                            break;
+                        }
+                    }
+                    InputStream inputStream = uploadIpfsFileReq.getInputStream();
+                    inputStream.skip(checkpoint);
+                    uploadIpfsSignReq.setContent(inputStream);
+                }catch (IOException e) {
+                    logException("Unable to readinputstream error: ", e.getMessage());
+                }
                 uploadIpfsSignReq.addHeader(HttpHeaders.RANGE, String.format(RANGE_HEADER, checkpoint));
             } else {
                 uploadIpfsSignReq.addHeader(HttpHeaders.RANGE, String.format(RANGE_HEADER, 0));
@@ -71,7 +87,6 @@ public class IpfsFileOperation extends FileCommonOperation {
             uploadIpfsSignReq.addHeader(HttpHeaders.CONNECTION, HTTP_OBJECT_CONNECTION);
             uploadIpfsSignReq.setMethod(HttpMethod.POST);
             uploadIpfsSignReq.setContentLength(uploadIpfsFileReq.getFileSize());
-            uploadIpfsSignReq.setContent(uploadIpfsFileReq.getInputStream());
             uploadIpfsSignReq.setUrl(uploadIpfsSignDTO.getData().getNodeAddr());
             ResultResponse<String> resultResponse = commonParserExcute(uploadIpfsSignReq, String.class);
             if (callBackFinish != null) {

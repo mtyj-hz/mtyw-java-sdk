@@ -14,7 +14,9 @@ import com.mtyw.storage.model.response.ResultResponse;
 import com.mtyw.storage.model.response.filecoin.*;
 import com.mtyw.storage.util.HttpHeaders;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,14 +55,28 @@ public class FileCoinOperation extends FileCommonOperation {
             uploadFilecoinReq.setUserId(uploadFilecoinSignDTO.getData().getUserId());
             uploadFilecoinReq.setDays(uploadFilecoinSignDTO.getData().getDays());
             Request uploadFilecoinAddReq = new MFSSRequestBuilder<>(uploadFilecoinReq, false).build();
+            uploadFilecoinAddReq.setContent(uploadFileCoinFileReq.getInputStream());
             uploadFilecoinAddReq.setResourcePath(ResourePathConstant.UPLOAD_FILECOIN_ADD_RESOURCE);
             if (uploadFileCoinFileReq.getUploadRequestId() != null && uploadFileCoinFileReq.getUploadRequestId() > 0) {
                 UploadFilecoinCheckpointReq uploadFilecoinCheckpointReq = new UploadFilecoinCheckpointReq();
                 uploadFilecoinCheckpointReq.setFilename(uploadFileCoinFileReq.getFileName());
                 uploadFilecoinCheckpointReq.setUploadid(uploadFileCoinFileReq.getUploadRequestId().intValue());
                 uploadFilecoinCheckpointReq.setUserid(uploadFilecoinSignDTO.getData().getUserId());
-
                 Long checkpoint = getCheckpoint(uploadFilecoinCheckpointReq);
+                try {
+                    int i;
+                    while((i = uploadFileCoinFileReq.getInputStream().read())!=-1)
+                    {
+                        if (i>= checkpoint) {
+                            break;
+                        }
+                    }
+                    InputStream inputStream = uploadFileCoinFileReq.getInputStream();
+                    inputStream.skip(checkpoint);
+                    uploadFilecoinAddReq.setContent(inputStream);
+                }catch (IOException e) {
+                    logException("Unable to readinputstream error: ", e.getMessage());
+                }
                 uploadFilecoinAddReq.addHeader(HttpHeaders.RANGE, String.format(RANGE_HEADER, checkpoint));
             } else {
                 uploadFilecoinAddReq.addHeader(HttpHeaders.RANGE, String.format(RANGE_HEADER, 0));
@@ -68,7 +84,6 @@ public class FileCoinOperation extends FileCommonOperation {
             uploadFilecoinAddReq.addHeader(HttpHeaders.CONNECTION, HTTP_OBJECT_CONNECTION);
             uploadFilecoinAddReq.setMethod(HttpMethod.POST);
             uploadFilecoinAddReq.setContentLength(uploadFileCoinFileReq.getFileSize());
-            uploadFilecoinAddReq.setContent(uploadFileCoinFileReq.getInputStream());
             uploadFilecoinAddReq.setUrl(uploadFilecoinSignDTO.getData().getNodeAddr());
             ResultResponse<String> resultResponse = commonParserExcute(uploadFilecoinAddReq, String.class);
             if (callBackFinish != null) {
@@ -98,6 +113,7 @@ public class FileCoinOperation extends FileCommonOperation {
         }
         return 0l;
     }
+
 
     public ResultResponse<List<FilecoinDateRes>> filecoinDatelist() {
         Request request = new MFSSRequestBuilder<>().build();
