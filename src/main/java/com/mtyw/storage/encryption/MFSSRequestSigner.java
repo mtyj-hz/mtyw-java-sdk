@@ -50,7 +50,7 @@ public class MFSSRequestSigner implements RequestSigner {
             request.addParameters(mapCommon);
             String signature;
             signature = SignUtil.sign(map, Arrays.asList("accesskey", "timestamp")
-                    , Arrays.asList("accesskey", "timestamp"), "2");
+                    , Arrays.asList("accesskey", "timestamp"), secretAccessKey);
             request.addHeader(HttpHeaders.AUTHORIZATION, signature);
         }
     }

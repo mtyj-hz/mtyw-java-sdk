@@ -73,8 +73,8 @@ public class MFSSClient implements MFSS {
     @Override
     public ResultResponse createIpfsdir(String parentpath, String dirname) {
         CreateDirReq createDirReq = new CreateDirReq();
-        createDirReq.setDirectoryName(parentpath);
-        createDirReq.setParentpath(dirname);
+        createDirReq.setDirectoryName(dirname);
+        createDirReq.setParentpath(parentpath);
         ResultResponse response = ipfsFileOperation.createDir(createDirReq);
         return response;
     }
