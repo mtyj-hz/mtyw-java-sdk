@@ -7,6 +7,7 @@ import com.mtyw.storage.common.MFSSRequestBuilder;
 import com.mtyw.storage.common.Request;
 import com.mtyw.storage.common.ServiceClient;
 import com.mtyw.storage.constant.ResourePathConstant;
+import com.mtyw.storage.exception.MtExceptionEnum;
 import com.mtyw.storage.exception.MtywApiException;
 import com.mtyw.storage.model.request.filecoin.*;
 import com.mtyw.storage.model.request.ipfs.UploadCallbackReq;
@@ -32,6 +33,15 @@ public class FileCoinOperation extends FileCommonOperation {
     public ResultResponse<String> uploadFilecoinFile(UploadFileCoinFileReq uploadFileCoinFileReq, CallBack callBackReceiveRequestid, CallBack callBackFinish) throws MtywApiException {
         Request request = new MFSSRequestBuilder<>(uploadFileCoinFileReq, false).build();
         request.setResourcePath(ResourePathConstant.UPLOAD_FILECOIN_SIGN_RESOURCE);
+        int filesize = uploadFileCoinFileReq.getFileSize().intValue();
+        try {
+            filesize = uploadFileCoinFileReq.getInputStream().available();
+        }catch (Exception e) {
+        }
+        if (!uploadFileCoinFileReq.getFileSize() .equals(filesize)) {
+            throw new MtywApiException(MtExceptionEnum.FILE_SIZE_ERROR);
+        }
+
         ResultResponse<UploadFilecoinSignDTO> uploadFilecoinSignDTO = commonParserExcute(request, UploadFilecoinSignDTO.class);
         if (uploadFilecoinSignDTO.isSuccess()) {
             if (callBackReceiveRequestid != null) {
@@ -64,13 +74,7 @@ public class FileCoinOperation extends FileCommonOperation {
                 uploadFilecoinCheckpointReq.setUserid(uploadFilecoinSignDTO.getData().getUserId());
                 Long checkpoint = getCheckpoint(uploadFilecoinCheckpointReq);
                 try {
-                    int i;
-                    while((i = uploadFileCoinFileReq.getInputStream().read())!=-1)
-                    {
-                        if (i>= checkpoint) {
-                            break;
-                        }
-                    }
+
                     InputStream inputStream = uploadFileCoinFileReq.getInputStream();
                     inputStream.skip(checkpoint);
                     uploadFilecoinAddReq.setContent(inputStream);

@@ -1,7 +1,9 @@
 package com.mtyw.storage.exception;
 
 public enum MtExceptionEnum implements ServiceExceptionEnum {
-    ILLEGAL_PARAM(50001, "所有参数必传"),
+    ILLEGAL_PARAM(10001, "所有参数必传"),
+    FILE_SIZE_ERROR(10002, "文件大小不一致"),
+
     UNKNOWN_ERROR(99999, "未知错误"),
     ;
 

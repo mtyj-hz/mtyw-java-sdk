@@ -4,6 +4,7 @@ package com.mtyw.storage.internal;
 import com.mtyw.storage.HttpMethod;
 import com.mtyw.storage.common.*;
 import com.mtyw.storage.constant.ResourePathConstant;
+import com.mtyw.storage.exception.MtExceptionEnum;
 import com.mtyw.storage.exception.MtywApiException;
 import com.mtyw.storage.model.request.ipfs.*;
 import com.mtyw.storage.model.response.ResultResponse;
@@ -32,6 +33,14 @@ public class IpfsFileOperation extends FileCommonOperation {
 
     public ResultResponse<String> uploadIpfsFile(UploadIpfsFileReq uploadIpfsFileReq, CallBack callBackReceiveRequestid, CallBack callBackFinish) throws MtywApiException {
         Request request = new MFSSRequestBuilder<>(uploadIpfsFileReq, false).build();
+        int filesize = uploadIpfsFileReq.getFileSize().intValue();
+        try {
+            filesize = uploadIpfsFileReq.getInputStream().available();
+        }catch (Exception e) {
+        }
+        if (!uploadIpfsFileReq.getFileSize() .equals(filesize)) {
+            throw new MtywApiException(MtExceptionEnum.FILE_SIZE_ERROR);
+        }
         request.setResourcePath(ResourePathConstant.UPLOAD_IPFS_SIGN_RESOURCE);
         ResultResponse<UploadIpfsSignInfoDTO> uploadIpfsSignDTO = commonParserExcute(request, UploadIpfsSignInfoDTO.class);
         if (uploadIpfsSignDTO.isSuccess()) {
@@ -66,13 +75,6 @@ public class IpfsFileOperation extends FileCommonOperation {
                 uploadIpfsCheckpointReq.setUserid(uploadIpfsSignDTO.getData().getUserid());
                 Long checkpoint = getCheckpoint(uploadIpfsCheckpointReq);
                 try {
-                    int i;
-                    while((i = uploadIpfsFileReq.getInputStream().read())!=-1)
-                    {
-                        if (i>= checkpoint) {
-                            break;
-                        }
-                    }
                     InputStream inputStream = uploadIpfsFileReq.getInputStream();
                     inputStream.skip(checkpoint);
                     uploadIpfsSignReq.setContent(inputStream);
@@ -107,6 +109,7 @@ public class IpfsFileOperation extends FileCommonOperation {
         }
         return ResultResponse.fail(uploadIpfsSignDTO.getCode(), uploadIpfsSignDTO.getMsg());
     }
+
 
     private Long getCheckpoint(UploadIpfsCheckpointReq uploadIpfsCheckpointReq) {
         Request request = new MFSSRequestBuilder<>(uploadIpfsCheckpointReq, false).build();
