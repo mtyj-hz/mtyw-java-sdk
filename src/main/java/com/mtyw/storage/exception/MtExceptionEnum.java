@@ -5,6 +5,8 @@ public enum MtExceptionEnum implements ServiceExceptionEnum {
     FILE_SIZE_ERROR(10002, "文件大小不一致"),
 
     UNKNOWN_ERROR(99999, "未知错误"),
+
+    IPFS_DIRECTORY_LIST_TIMEOUT(10001, "getIpfsDirectoryList timeout!"),
     ;
 
     private final Integer code;

@@ -105,7 +105,21 @@ public class IpfsFileOperation extends FileCommonOperation {
                     logException("Unable to invoke callBackFinish error: ", e.getMessage());
                 }
             }
-            return resultResponse;
+            for (int i = 0; i < 10; i++) {
+                ResultResponse<FileInfoRes> res = getIpfsDirectorylist(uploadIpfsSignDTO.getData().getFilepath());
+                if (!res.isSuccess()) {
+                    return ResultResponse.fail(MtExceptionEnum.UNKNOWN_ERROR);
+                }
+                if (res.getData().getFileVOS().size() != 0) {
+                    return resultResponse;
+                }
+                try {
+                    Thread.sleep(i * 500);
+                } catch (InterruptedException e) {
+                    throw new MtywApiException("thread sleep fail ", e);
+                }
+            }
+            return ResultResponse.fail(MtExceptionEnum.IPFS_DIRECTORY_LIST_TIMEOUT);
         }
         return ResultResponse.fail(uploadIpfsSignDTO.getCode(), uploadIpfsSignDTO.getMsg());
     }
@@ -164,7 +178,6 @@ public class IpfsFileOperation extends FileCommonOperation {
         getR.setUrl(data.getNodeAddr());
         return commonParserExcute(getR, ObjectGetRes.class);
     }
-
 
 
     public ResultResponse<List<RegionRes>> getAllRegionList() {
