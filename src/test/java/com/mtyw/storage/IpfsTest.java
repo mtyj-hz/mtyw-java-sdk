@@ -5,6 +5,7 @@ import com.mtyw.storage.model.response.ResultResponse;
 import com.mtyw.storage.model.response.ipfs.*;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Collections;
@@ -84,7 +85,7 @@ public class IpfsTest extends TestBase{
     public  void uploadIpfsfile() {
         UploadIpfsFileReq uploadIpfsFileRequest = new UploadIpfsFileReq();
         uploadIpfsFileRequest.setFileName("uzinvitation_1592882753457.jpg");
-        InputStream inputStream = null;
+        FileInputStream inputStream = null;
         Long length = 0l;
         try{
             inputStream = new FileInputStream("/Users/chenxiaoli/uzinvitation_1592882753457.jpg");

@@ -10,17 +10,10 @@ import com.mtyw.storage.model.request.ipfs.*;
 import com.mtyw.storage.model.response.ResultResponse;
 import com.mtyw.storage.model.response.ipfs.*;
 import com.mtyw.storage.util.HttpHeaders;
-import org.omg.PortableInterceptor.INACTIVE;
 
 import java.io.*;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.nio.channels.FileChannel;
+import java.util.*;
 
 import static com.mtyw.storage.constant.MFSSConstants.*;
 import static com.mtyw.storage.util.LogUtils.logException;
@@ -33,12 +26,14 @@ public class IpfsFileOperation extends FileCommonOperation {
 
     public ResultResponse<String> uploadIpfsFile(UploadIpfsFileReq uploadIpfsFileReq, CallBack callBackReceiveRequestid, CallBack callBackFinish) throws MtywApiException {
         Request request = new MFSSRequestBuilder<>(uploadIpfsFileReq, false).build();
-        int filesize = uploadIpfsFileReq.getFileSize().intValue();
+        long filesize;
+        FileChannel channel = uploadIpfsFileReq.getInputStream().getChannel();
         try {
-            filesize = uploadIpfsFileReq.getInputStream().available();
-        }catch (Exception e) {
+            filesize = channel.size();
+        } catch (IOException e) {
+            throw new MtywApiException(MtExceptionEnum.UNKNOWN_ERROR);
         }
-        if (!uploadIpfsFileReq.getFileSize() .equals(filesize)) {
+        if (!uploadIpfsFileReq.getFileSize().equals(filesize)) {
             throw new MtywApiException(MtExceptionEnum.FILE_SIZE_ERROR);
         }
         request.setResourcePath(ResourePathConstant.UPLOAD_IPFS_SIGN_RESOURCE);
@@ -78,7 +73,7 @@ public class IpfsFileOperation extends FileCommonOperation {
                     InputStream inputStream = uploadIpfsFileReq.getInputStream();
                     inputStream.skip(checkpoint);
                     uploadIpfsSignReq.setContent(inputStream);
-                }catch (IOException e) {
+                } catch (IOException e) {
                     logException("Unable to readinputstream error: ", e.getMessage());
                 }
                 uploadIpfsSignReq.addHeader(HttpHeaders.RANGE, String.format(RANGE_HEADER, checkpoint));
@@ -215,6 +210,25 @@ public class IpfsFileOperation extends FileCommonOperation {
     }
 
     public ResultResponse<Boolean> deleteIpfsfile(String filepath, List<String> nodeids) {
+        ResultResponse<FileDetailRes> fileRes = backupManagement(filepath);
+        if (fileRes.isSuccess()) {
+            if (nodeids.size() == fileRes.getData().getNodeids().size()) {
+                Map<String, Boolean> nodeIdMap = new HashMap<>();
+                for (FileDetailRes.Node t : fileRes.getData().getNodeids()) {
+                    nodeIdMap.put(t.getNodeid(), true);
+                }
+                boolean flag = true;
+                for (String nodeid : nodeids) {
+                    if (nodeIdMap.get(nodeid) == null) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) {
+                    return deleteIpfsfileList(Collections.singletonList(filepath));
+                }
+            }
+        }
         MFSSRequestBuilder<String> requestBuilder = new MFSSRequestBuilder<>("filepath", filepath);
         requestBuilder.setInputStream(MFSSRequestBuilder.objToInputstream(nodeids));
         Request request = requestBuilder.build();

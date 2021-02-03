@@ -3,13 +3,13 @@ package com.mtyw.storage.model.request.ipfs;
 
 import com.mtyw.storage.annotation.Null;
 
-import java.io.InputStream;
+import java.io.FileInputStream;
 
 public class UploadIpfsFileReq {
     /**
      * 文件流
      */
-    private InputStream inputStream;
+    private FileInputStream inputStream;
     /**
      * 文件名
      */
@@ -33,11 +33,11 @@ public class UploadIpfsFileReq {
     private Long uploadRequestId;
 
 
-    public InputStream getInputStream() {
+    public FileInputStream getInputStream() {
         return inputStream;
     }
 
-    public void setInputStream(InputStream inputStream) {
+    public void setInputStream(FileInputStream inputStream) {
         this.inputStream = inputStream;
     }
 
