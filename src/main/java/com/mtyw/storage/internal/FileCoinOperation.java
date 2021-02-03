@@ -18,6 +18,7 @@ import com.mtyw.storage.util.HttpHeaders;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.channels.FileChannel;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,13 +33,14 @@ public class FileCoinOperation extends FileCommonOperation {
 
     public ResultResponse<String> uploadFilecoinFile(UploadFileCoinFileReq uploadFileCoinFileReq, CallBack callBackReceiveRequestid, CallBack callBackFinish) throws MtywApiException {
         Request request = new MFSSRequestBuilder<>(uploadFileCoinFileReq, false).build();
-        request.setResourcePath(ResourePathConstant.UPLOAD_FILECOIN_SIGN_RESOURCE);
-        int filesize = uploadFileCoinFileReq.getFileSize().intValue();
+        long filesize;
+        FileChannel channel = uploadFileCoinFileReq.getInputStream().getChannel();
         try {
-            filesize = uploadFileCoinFileReq.getInputStream().available();
-        }catch (Exception e) {
+            filesize = channel.size();
+        } catch (IOException e) {
+            throw new MtywApiException(MtExceptionEnum.UNKNOWN_ERROR);
         }
-        if (!uploadFileCoinFileReq.getFileSize() .equals(filesize)) {
+        if (!uploadFileCoinFileReq.getFileSize().equals(filesize)) {
             throw new MtywApiException(MtExceptionEnum.FILE_SIZE_ERROR);
         }
 
