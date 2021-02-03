@@ -15,7 +15,6 @@ import com.mtyw.storage.model.response.ResultResponse;
 import com.mtyw.storage.model.response.filecoin.*;
 import com.mtyw.storage.util.HttpHeaders;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.channels.FileChannel;
@@ -43,6 +42,7 @@ public class FileCoinOperation extends FileCommonOperation {
         if (!uploadFileCoinFileReq.getFileSize().equals(filesize)) {
             throw new MtywApiException(MtExceptionEnum.FILE_SIZE_ERROR);
         }
+        request.setResourcePath(ResourePathConstant.UPLOAD_FILECOIN_SIGN_RESOURCE);
 
         ResultResponse<UploadFilecoinSignDTO> uploadFilecoinSignDTO = commonParserExcute(request, UploadFilecoinSignDTO.class);
         if (uploadFilecoinSignDTO.isSuccess()) {
