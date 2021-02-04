@@ -51,7 +51,7 @@ public class FileCoinOperation extends FileCommonOperation {
                     UploadCallbackReq uploadCallbackReq = new UploadCallbackReq();
                     uploadCallbackReq.setUploadid(uploadFilecoinSignDTO.getData().getUploadId());
                     uploadCallbackReq.setSuccess(true);
-                    callBackFinish.invoke(uploadCallbackReq);
+                    callBackReceiveRequestid.invoke(uploadCallbackReq);
                 } catch (Exception e) {
                     logException("Unable to invoke callBackReceiveRequestid error: ", e.getMessage());
                 }
