@@ -12,6 +12,7 @@ import com.mtyw.storage.model.response.ipfs.*;
 import com.mtyw.storage.util.HttpHeaders;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.util.*;
 
@@ -139,24 +140,47 @@ public class IpfsFileOperation extends FileCommonOperation {
     }
 
     public ResultResponse<Void> downloadIpfsFile(String filePath, String saveDir) {
-        Request request = new MFSSRequestBuilder<>("filepath", filePath).build();
-        request.setResourcePath(ResourePathConstant.DOWNLOAD_IPFS_SIGN);
-        ResultResponse<FileDownloadResponse> response = commonParserExcute(request, FileDownloadResponse.class);
-        if (!response.isSuccess()) {
-            return ResultResponse.fail(response.getMsg());
-        }
-        FileDownloadResponse data = response.getData();
-        DownloadIpfsFileReq download = new DownloadIpfsFileReq(data);
-        Request dr = new MFSSRequestBuilder<>(download, false).build();
-        dr.setResourcePath(ResourePathConstant.DOWNLOAD_IPFS);
-        dr.setUrl(data.getNodeAddr());
-        ServiceClient.Request httpRequest = buildRequest(dr);
         try {
+            FileDownloadResponse data = buildDownloadRequest(filePath);
+            DownloadIpfsFileReq download = new DownloadIpfsFileReq(data);
+            Request dr = new MFSSRequestBuilder<>(download, false).build();
+            dr.setResourcePath(ResourePathConstant.DOWNLOAD_IPFS);
+            dr.setUrl(data.getNodeAddr());
+            ServiceClient.Request httpRequest = buildRequest(dr);
             downloadFile(httpRequest.getUri(), saveDir, data.getFilename());
+        } catch (MtywApiException e) {
+            return ResultResponse.fail(e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
         }
         return ResultResponse.suc();
+    }
+
+    public ResultResponse<InputStream> downloadIpfsFile(String filePath) {
+        try {
+            FileDownloadResponse data = buildDownloadRequest(filePath);
+            DownloadIpfsFileReq download = new DownloadIpfsFileReq(data);
+            Request dr = new MFSSRequestBuilder<>(download, false).build();
+            dr.setResourcePath(ResourePathConstant.DOWNLOAD_IPFS);
+            dr.setUrl(data.getNodeAddr());
+            ServiceClient.Request httpRequest = buildRequest(dr);
+            InputStream inputStream = new URL(httpRequest.getUri()).openStream();
+            return ResultResponse.suc(inputStream);
+        } catch (MtywApiException e) {
+            return ResultResponse.fail(e.getMessage());
+        } catch (IOException e) {
+            return ResultResponse.fail(MtExceptionEnum.FILE_URI_ERROR);
+        }
+    }
+
+    private FileDownloadResponse buildDownloadRequest(String filePath) {
+        Request request = new MFSSRequestBuilder<>("filepath", filePath).build();
+        request.setResourcePath(ResourePathConstant.DOWNLOAD_IPFS_SIGN);
+        ResultResponse<FileDownloadResponse> response = commonParserExcute(request, FileDownloadResponse.class);
+        if (!response.isSuccess()) {
+            throw new MtywApiException(response.getMsg());
+        }
+        return response.getData();
     }
 
     public ResultResponse<ObjectGetRes> objectGet(String filepath) {

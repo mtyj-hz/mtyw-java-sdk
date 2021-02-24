@@ -4,13 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.mtyw.storage</groupId>
+    <groupId>wang.mty</groupId>
     <artifactId>mtyw-java-sdk</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0-RELEASE</version>
     <packaging>jar</packaging>
     <name>mtyw-java-sdk</name>
     <!-- FIXME change it to the project's website -->
     <url>https://pro.mty.wang/index</url>
+    <description>java sdk for mtyw project</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -114,10 +115,10 @@
                     <artifactId>maven-site-plugin</artifactId>
                     <version>3.7.1</version>
                 </plugin>
-                <plugin>
-                    <artifactId>maven-project-info-reports-plugin</artifactId>
-                    <version>3.0.0</version>
-                </plugin>
+<!--                <plugin>-->
+<!--                    <artifactId>maven-project-info-reports-plugin</artifactId>-->
+<!--                    <version>3.0.0</version>-->
+<!--                </plugin>-->
             </plugins>
         </pluginManagement>
     </build>
@@ -145,7 +146,7 @@
 
     <profiles>
         <profile>
-            <id>release</id>
+            <id>mtyw-sdk</id>
             <build>
                 <plugins>
                     <!-- Source -->

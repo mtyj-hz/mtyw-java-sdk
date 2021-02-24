@@ -17,6 +17,7 @@ import com.mtyw.storage.util.HttpHeaders;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.util.HashMap;
 import java.util.List;
@@ -183,6 +184,40 @@ public class FileCoinOperation extends FileCommonOperation {
     }
 
     public ResultResponse<Void> downloadFileCoinFile(String cid, String uploadid, String saveDir) {
+        try {
+            FilecoindownloadRes data = buildFileCoinDownloadRequest(cid, uploadid);
+            DownloadFileCoinFileReq download = new DownloadFileCoinFileReq(data);
+            Request dr = new MFSSRequestBuilder<>(download, false).build();
+            dr.setResourcePath(ResourePathConstant.FILECOIN_DOWNLOAD);
+            dr.setUrl(data.getNodeAddr());
+            ServiceClient.Request httpRequest = buildRequest(dr);
+            downloadFile(httpRequest.getUri(), saveDir, data.getFileName());
+        } catch (MtywApiException e) {
+            return ResultResponse.fail(e.getMessage());
+        } catch (IOException e) {
+            return ResultResponse.fail(MtExceptionEnum.FILE_URI_ERROR);
+        }
+        return ResultResponse.suc();
+    }
+
+    public ResultResponse<InputStream> downloadFileCoinFile(String cid, String uploadid) {
+        try {
+            FilecoindownloadRes data = buildFileCoinDownloadRequest(cid, uploadid);
+            DownloadFileCoinFileReq download = new DownloadFileCoinFileReq(data);
+            Request dr = new MFSSRequestBuilder<>(download, false).build();
+            dr.setResourcePath(ResourePathConstant.FILECOIN_DOWNLOAD);
+            dr.setUrl(data.getNodeAddr());
+            ServiceClient.Request httpRequest = buildRequest(dr);
+            InputStream inputStream = new URL(httpRequest.getUri()).openStream();
+            return ResultResponse.suc(inputStream);
+        } catch (MtywApiException e) {
+            return ResultResponse.fail(e.getMessage());
+        } catch (IOException e) {
+            return ResultResponse.fail(MtExceptionEnum.FILE_URI_ERROR);
+        }
+    }
+
+    private FilecoindownloadRes buildFileCoinDownloadRequest(String cid, String uploadid) throws MtywApiException{
         Map<String, String> param = new HashMap<>();
         param.put("cid", cid);
         param.put("uploadid", uploadid);
@@ -190,19 +225,11 @@ public class FileCoinOperation extends FileCommonOperation {
         request.setResourcePath(ResourePathConstant.FILECOIN_DOWNLOAD_SIGN);
         ResultResponse<FilecoindownloadRes> response = commonParserExcute(request, FilecoindownloadRes.class);
         if (!response.isSuccess()) {
-            return ResultResponse.fail(response.getMsg());
+            throw new MtywApiException(response.getMsg());
         }
-        FilecoindownloadRes data = response.getData();
-        DownloadFileCoinFileReq download = new DownloadFileCoinFileReq(data);
-        Request dr = new MFSSRequestBuilder<>(download, false).build();
-        dr.setResourcePath(ResourePathConstant.FILECOIN_DOWNLOAD);
-        dr.setUrl(data.getNodeAddr());
-        ServiceClient.Request httpRequest = buildRequest(dr);
-        try {
-            downloadFile(httpRequest.getUri(), saveDir, data.getFileName());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return ResultResponse.suc();
+        return response.getData();
     }
+
+
+
 }

@@ -3,6 +3,7 @@ package com.mtyw.storage.exception;
 public enum MtExceptionEnum implements ServiceExceptionEnum {
     ILLEGAL_PARAM(10001, "所有参数必传"),
     FILE_SIZE_ERROR(10002, "文件大小不一致"),
+    FILE_URI_ERROR(10003, "下载文件uri地址异常"),
 
     UNKNOWN_ERROR(99999, "未知错误"),
 
