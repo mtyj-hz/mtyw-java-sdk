@@ -7,7 +7,7 @@ public enum MtExceptionEnum implements ServiceExceptionEnum {
 
     UNKNOWN_ERROR(99999, "未知错误"),
 
-    IPFS_DIRECTORY_LIST_TIMEOUT(10003, "getIpfsDirectoryList timeout!"),
+    IPFS_DIRECTORY_LIST_TIMEOUT(10004, "getIpfsDirectoryList timeout!"),
     ;
 
     private final Integer code;
