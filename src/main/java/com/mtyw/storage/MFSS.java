@@ -30,6 +30,7 @@ import com.mtyw.storage.model.response.ResultResponse;
 import com.mtyw.storage.model.response.filecoin.*;
 import com.mtyw.storage.model.response.ipfs.*;
 
+import java.io.InputStream;
 import java.util.List;
 
 
@@ -66,6 +67,12 @@ public interface MFSS {
      * @param saveDir   存储目录
      */
     ResultResponse<Void> downloadIpfsFile(String filePath, String saveDir);
+
+    /**
+     * 下载ipfs文件
+     * @param filePath  文件路径
+     */
+    ResultResponse<InputStream> downloadIpfsFile(String filePath);
 
 
     /**
@@ -165,6 +172,14 @@ public interface MFSS {
      * @return
      */
     ResultResponse<Void> downloadFileCoinFile(String cid, String uploadid, String saveDir);
+
+    /**
+     * 下载filCoin文件
+     * @param cid       文件cid
+     * @param uploadid  上传id
+     * @return
+     */
+    ResultResponse<InputStream> downloadFileCoinFile(String cid, String uploadid);
 
     /**
      * filecoin冷备购买天数接口

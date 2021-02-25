@@ -17,6 +17,7 @@ import com.mtyw.storage.model.response.ResultResponse;
 import com.mtyw.storage.model.response.filecoin.*;
 import com.mtyw.storage.model.response.ipfs.*;
 
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -92,8 +93,18 @@ public class MFSSClient implements MFSS {
     }
 
     @Override
+    public ResultResponse<InputStream> downloadFileCoinFile(String cid, String uploadid) {
+        return fileCoinOperation.downloadFileCoinFile(cid, uploadid);
+    }
+
+    @Override
     public ResultResponse<Void> downloadIpfsFile(String filePath, String saveDir) {
         return ipfsFileOperation.downloadIpfsFile(filePath, saveDir);
+    }
+
+    @Override
+    public ResultResponse<InputStream> downloadIpfsFile(String filePath) {
+        return ipfsFileOperation.downloadIpfsFile(filePath);
     }
 
     @Override
