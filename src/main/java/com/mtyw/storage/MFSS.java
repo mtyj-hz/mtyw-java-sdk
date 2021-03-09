@@ -60,6 +60,16 @@ public interface MFSS {
      * @return
      */
     ResultResponse<String> uploadIpfsFile(UploadIpfsFileReq uploadIpfsFileReq, CallBack callBackReceiveRequestid, CallBack callBackFinish) throws MtywApiException;;
+    /**
+     * ipfs断点续传 同名文件存在则覆盖
+     * @param uploadIpfsFileReq 上传信息请求
+     * @param callBackReceiveRequestid 接收上传uploadid信息回调， 中途上传上传断开，断点续传需要用到接口返回的uploadid，可以先存储到数据库中
+     * @param callBackFinish 上传完成后回调上传状态
+     * @return
+     */
+    ResultResponse<String> uploadIpfsCoverFile(UploadIpfsFileReq uploadIpfsFileReq
+            , CallBack callBackReceiveRequestid
+            , CallBack callBackFinish) throws MtywApiException;;
 
     /**
      * 下载ipfs文件
@@ -73,6 +83,14 @@ public interface MFSS {
      * @param filePath  文件路径
      */
     ResultResponse<InputStream> downloadIpfsFile(String filePath);
+
+    /**
+     *
+     * @param filePath
+     * @param expiration
+     * @return
+     */
+    ResultResponse<String> generateDownloadIpfsFilesignUrl(String filePath, Long expiration);
 
 
     /**

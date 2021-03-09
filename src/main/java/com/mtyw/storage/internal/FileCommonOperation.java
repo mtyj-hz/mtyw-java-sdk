@@ -91,7 +91,7 @@ public abstract class FileCommonOperation {
     protected ServiceClient.Request buildRequest(Request request) throws MtywApiException {
         request.getHeaders().putAll(client.getClientConfiguration().getDefaultHeaders());
         Context context = createDefaultContext(accesskey, accesssecret);
-        return client.buildRequest(request,context);
+        return client.buildRequest(request, context);
     }
 
     public String getAccesskey() {

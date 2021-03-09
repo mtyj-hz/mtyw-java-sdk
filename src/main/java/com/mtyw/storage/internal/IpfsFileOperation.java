@@ -25,6 +25,20 @@ public class IpfsFileOperation extends FileCommonOperation {
         super(client, accessKey, accessSecret);
     }
 
+
+    public ResultResponse<String> uploadIpfsRecoverFile(UploadIpfsFileReq uploadIpfsFileReq, CallBack callBackReceiveRequestid, CallBack callBackFinish) throws MtywApiException {
+        String filepath = uploadIpfsFileReq.getFilepath();
+        ResultResponse<FileDetailRes> fileRes = backupManagement(uploadIpfsFileReq.getFilepath());
+        if (fileRes.isSuccess()) {
+            ResultResponse<Boolean> resultResponse = deleteIpfsfileList(Collections.singletonList(filepath));
+            if (resultResponse.isSuccess()) {
+                return uploadIpfsFile(uploadIpfsFileReq, callBackReceiveRequestid, callBackFinish);
+            }
+
+        }
+        return uploadIpfsFile(uploadIpfsFileReq, callBackReceiveRequestid, callBackFinish);
+    }
+
     public ResultResponse<String> uploadIpfsFile(UploadIpfsFileReq uploadIpfsFileReq, CallBack callBackReceiveRequestid, CallBack callBackFinish) throws MtywApiException {
         Request request = new MFSSRequestBuilder<>(uploadIpfsFileReq, false).build();
         long filesize;
@@ -156,6 +170,22 @@ public class IpfsFileOperation extends FileCommonOperation {
         return ResultResponse.suc();
     }
 
+    public ResultResponse<String> getIpfsDownloadFileLink(String filePath, Long expiration) {
+        try {
+            FileDownloadResponse data = buildDownloadRequestExpiration(filePath, expiration);
+            DownloadIpfsFileReq download = new DownloadIpfsFileReq(data);
+            Request dr = new MFSSRequestBuilder<>(download, false).build();
+            dr.setResourcePath(ResourePathConstant.DOWNLOAD_IPFS);
+            dr.setUrl(data.getNodeAddr());
+            ServiceClient.Request httpRequest = buildRequest(dr);
+            return ResultResponse.suc(httpRequest.getUri());
+        } catch (MtywApiException e) {
+            return ResultResponse.fail(e.getMessage());
+        } catch (Exception e) {
+            return ResultResponse.fail(MtExceptionEnum.FILE_URI_ERROR);
+        }
+    }
+
     public ResultResponse<InputStream> downloadIpfsFile(String filePath) {
         try {
             FileDownloadResponse data = buildDownloadRequest(filePath);
@@ -172,10 +202,22 @@ public class IpfsFileOperation extends FileCommonOperation {
             return ResultResponse.fail(MtExceptionEnum.FILE_URI_ERROR);
         }
     }
-
     private FileDownloadResponse buildDownloadRequest(String filePath) {
         Request request = new MFSSRequestBuilder<>("filepath", filePath).build();
         request.setResourcePath(ResourePathConstant.DOWNLOAD_IPFS_SIGN);
+        ResultResponse<FileDownloadResponse> response = commonParserExcute(request, FileDownloadResponse.class);
+        if (!response.isSuccess()) {
+            throw new MtywApiException(response.getMsg());
+        }
+        return response.getData();
+    }
+
+    private FileDownloadResponse buildDownloadRequestExpiration(String filePath, Long expiration) {
+        Map<String,String> map = new HashMap<>();
+        map.put("filepath", filePath);
+        map.put("expiration", expiration.toString());
+        Request request = new MFSSRequestBuilder<>(map).build();
+        request.setResourcePath(ResourePathConstant.DOWNLOAD_IPFS_SIGN_EXPIRATION);
         ResultResponse<FileDownloadResponse> response = commonParserExcute(request, FileDownloadResponse.class);
         if (!response.isSuccess()) {
             throw new MtywApiException(response.getMsg());

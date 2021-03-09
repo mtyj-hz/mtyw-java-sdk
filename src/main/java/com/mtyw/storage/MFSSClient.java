@@ -106,7 +106,10 @@ public class MFSSClient implements MFSS {
     public ResultResponse<InputStream> downloadIpfsFile(String filePath) {
         return ipfsFileOperation.downloadIpfsFile(filePath);
     }
-
+    @Override
+    public ResultResponse<String> generateDownloadIpfsFilesignUrl(String filePath, Long expiration) {
+        return ipfsFileOperation.getIpfsDownloadFileLink(filePath, expiration);
+    }
     @Override
     public ResultResponse<List<FilecoinDateRes>> filecoinDatelist() {
         ResultResponse<List<FilecoinDateRes>> resultResponse = fileCoinOperation.filecoinDatelist();
@@ -132,6 +135,12 @@ public class MFSSClient implements MFSS {
     @Override
     public ResultResponse<String> uploadIpfsFile(UploadIpfsFileReq uploadIpfsFileReq, CallBack callBackReceiveRequestid, CallBack callBackFinish) {
         ResultResponse<String> ipfsFile = ipfsFileOperation.uploadIpfsFile(uploadIpfsFileReq, callBackReceiveRequestid, callBackFinish);
+        return ipfsFile;
+    }
+
+    @Override
+    public ResultResponse<String> uploadIpfsCoverFile(UploadIpfsFileReq uploadIpfsFileReq, CallBack callBackReceiveRequestid, CallBack callBackFinish) {
+        ResultResponse<String> ipfsFile = ipfsFileOperation.uploadIpfsRecoverFile(uploadIpfsFileReq, callBackReceiveRequestid, callBackFinish);
         return ipfsFile;
     }
 

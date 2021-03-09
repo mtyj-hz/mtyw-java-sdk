@@ -29,6 +29,7 @@ public class ResourePathConstant {
 
 
     public final static String DOWNLOAD_IPFS_SIGN = "/filesdk/ipfsDownloadSign";
+    public final static String DOWNLOAD_IPFS_SIGN_EXPIRATION = "/filesdk/ipfsDownloadSignByExpiration";
     public final static String DOWNLOAD_IPFS = "/fs/cat";
     public final static String OBJECT_GET = "/object/get";
     public final static String IPFS_INSPECT_SIGN = "/filesdk/ipfsInspectsign";
