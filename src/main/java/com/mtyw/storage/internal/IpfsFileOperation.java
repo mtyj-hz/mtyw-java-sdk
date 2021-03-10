@@ -33,6 +33,8 @@ public class IpfsFileOperation extends FileCommonOperation {
             ResultResponse<Boolean> resultResponse = deleteIpfsfileList(Collections.singletonList(filepath));
             if (resultResponse.isSuccess()) {
                 return uploadIpfsFile(uploadIpfsFileReq, callBackReceiveRequestid, callBackFinish);
+            }else {
+                return ResultResponse.fail(resultResponse.getMsg());
             }
 
         }
