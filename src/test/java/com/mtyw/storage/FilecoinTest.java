@@ -40,7 +40,7 @@ public class FilecoinTest extends TestBase{
     public  void uploadFilecoinfile() {
         UploadFileCoinFileReq uploadIpfsFileRequest = new UploadFileCoinFileReq();
         uploadIpfsFileRequest.setFileName("qyn.mp4");
-        InputStream inputStream = null;
+        FileInputStream inputStream = null;
         Long length = 0l;
         try{
             inputStream = new FileInputStream("/Users/chenxiaoli/qyn.mp4");
