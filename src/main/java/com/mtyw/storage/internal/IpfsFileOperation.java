@@ -118,6 +118,12 @@ public class IpfsFileOperation extends FileCommonOperation {
                 }
             }
             for (int i = 0; i < 10; i++) {
+                if (i < 9) {
+                    sleep(20);
+                }
+                if (i == 9) {
+                    sleep(i * 50);
+                }
                 ResultResponse<FileInfoRes> res = getIpfsDirectorylist(uploadIpfsSignDTO.getData().getFilepath());
                 if (!res.isSuccess()) {
                     return ResultResponse.fail(MtExceptionEnum.UNKNOWN_ERROR);
@@ -125,17 +131,19 @@ public class IpfsFileOperation extends FileCommonOperation {
                 if (res.getData().getFileVOS().size() != 0) {
                     return resultResponse;
                 }
-                try {
-                    Thread.sleep(i * 500);
-                } catch (InterruptedException e) {
-                    throw new MtywApiException("thread sleep fail ", e);
-                }
             }
             return ResultResponse.fail(MtExceptionEnum.IPFS_DIRECTORY_LIST_TIMEOUT);
         }
         return ResultResponse.fail(uploadIpfsSignDTO.getCode(), uploadIpfsSignDTO.getMsg());
     }
 
+    private void  sleep(long sleep) {
+        try {
+            Thread.sleep(sleep);
+        } catch (InterruptedException e) {
+            throw new MtywApiException("thread sleep fail ", e);
+        }
+    }
 
     private Long getCheckpoint(UploadIpfsCheckpointReq uploadIpfsCheckpointReq) {
         Request request = new MFSSRequestBuilder<>(uploadIpfsCheckpointReq, false).build();
