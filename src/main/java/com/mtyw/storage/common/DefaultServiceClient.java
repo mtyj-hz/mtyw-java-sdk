@@ -24,6 +24,9 @@ import com.mtyw.storage.util.HttpHeaders;
 import com.mtyw.storage.util.HttpUtil;
 import com.mtyw.storage.util.IOUtils;
 import org.apache.http.Header;
+import org.apache.http.HeaderElement;
+import org.apache.http.HeaderElementIterator;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -32,6 +35,7 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.config.SocketConfig;
+import org.apache.http.conn.ConnectionKeepAliveStrategy;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
@@ -41,6 +45,9 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.message.BasicHeaderElementIterator;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.protocol.HttpContext;
 
 import javax.net.ssl.*;
 import java.io.ByteArrayInputStream;
@@ -93,7 +100,6 @@ public class DefaultServiceClient extends ServiceClient {
         httpContext.setRequestConfig(this.requestConfig);
 
         CloseableHttpResponse httpResponse = null;
-        System.out.println("urlinfo:"+httpRequest.getURI().toString());
         try {
             httpResponse = httpClient.execute(httpRequest, httpContext);
         } catch (ClientProtocolException ex) {
@@ -145,7 +151,25 @@ public class DefaultServiceClient extends ServiceClient {
     }
 
     protected CloseableHttpClient createHttpClient(HttpClientConnectionManager connectionManager) {
-        return HttpClients.custom().setConnectionManager(connectionManager)
+        ConnectionKeepAliveStrategy myStrategy = new ConnectionKeepAliveStrategy() {
+            @Override
+            public long getKeepAliveDuration(HttpResponse response, HttpContext context) {
+                HeaderElementIterator it = new BasicHeaderElementIterator
+                        (response.headerIterator(HTTP.CONN_KEEP_ALIVE));
+                while (it.hasNext()) {
+                    HeaderElement he = it.nextElement();
+                    String param = he.getName();
+                    String value = he.getValue();
+                    if (value != null && param.equalsIgnoreCase
+                            ("timeout")) {
+                        return Long.parseLong(value) * 1000;
+                    }
+                }
+                return 60 * 1000;//如果没有约定，则默认定义时长为60s
+            }
+        };
+
+        return HttpClients.custom().setKeepAliveStrategy(myStrategy).setConnectionManager(connectionManager)
                 .disableContentCompression().disableAutomaticRetries().build();
     }
 
