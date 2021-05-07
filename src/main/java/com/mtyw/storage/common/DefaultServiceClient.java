@@ -100,7 +100,6 @@ public class DefaultServiceClient extends ServiceClient {
         httpContext.setRequestConfig(this.requestConfig);
 
         CloseableHttpResponse httpResponse = null;
-        System.out.println("urlinfo:"+httpRequest.getURI().toString());
         try {
             httpResponse = httpClient.execute(httpRequest, httpContext);
         } catch (ClientProtocolException ex) {
