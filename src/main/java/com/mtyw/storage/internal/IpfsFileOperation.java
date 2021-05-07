@@ -119,10 +119,10 @@ public class IpfsFileOperation extends FileCommonOperation {
             }
             for (int i = 0; i < 10; i++) {
 
-                if (i < 6) {
-                    sleep(20);
+                if (i < 2) {
+                    sleep(90);
                 }
-                if (i >= 6) {
+                if (i >= 2) {
                     sleep(i * 50);
                 }
                 ResultResponse<FileInfoRes> res = getIpfsDirectorylist(uploadIpfsSignDTO.getData().getFilepath());
